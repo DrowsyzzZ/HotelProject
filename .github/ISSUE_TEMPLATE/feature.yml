@@ -1,0 +1,35 @@
+name: 기능 작업
+description: UI 또는 JavaScript 기능 작업을 등록합니다.
+title: "[Feature] "
+labels:
+  - feature
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 작업 내용
+      description: 구현할 내용을 간단히 작성해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: checklist
+    attributes:
+      label: 세부 작업
+      value: |
+        - [ ] PC 화면 구현
+        - [ ] 모바일 화면 구현
+        - [ ] 기능 동작 확인
+        - [ ] 콘솔 오류 확인
+  - type: textarea
+    id: done
+    attributes:
+      label: 완료 조건
+      description: 이 이슈를 닫을 수 있는 기준을 작성해 주세요.
+    validations:
+      required: true
+  - type: input
+    id: dependency
+    attributes:
+      label: 선행 이슈
+      placeholder: "예: #3"
+
