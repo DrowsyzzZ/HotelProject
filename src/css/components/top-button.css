@@ -1,1 +1,46 @@
-/* 이슈 #2에서 top-button 스타일을 정의합니다. */
+top-button {
+  display: block;
+}
+
+.top-button {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 200;
+  display: grid;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  color: var(--color-white);
+  font-size: 24px;
+  cursor: pointer;
+  background: var(--color-top-button-bg);
+  border: 0;
+  border-radius: 2px;
+  place-items: center;
+  transition: filter 200ms ease;
+}
+
+.top-button:hover {
+  filter: brightness(0.9);
+}
+.top-button i {
+  pointer-events: none;
+}
+
+.top-button:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 3px;
+}
+
+@media (width <= 1000px) {
+  top-button {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-button {
+    transition: none;
+  }
+}

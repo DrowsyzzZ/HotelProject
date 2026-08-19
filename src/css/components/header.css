@@ -1,1 +1,192 @@
-/* 이슈 #2에서 app-header 스타일을 정의합니다. */
+app-header {
+  display: block;
+}
+
+.site-header {
+  z-index: 100;
+  position: relative;
+  height: 240px;
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+.site-header__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 41px;
+}
+
+.site-header__logo {
+  margin-bottom: 30px;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.site-header__menu {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.site-header__item {
+  position: relative;
+}
+
+.site-header__link {
+  display: block;
+  padding: 0;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.site-header__link:hover,
+.site-header__link:focus-visible,
+.site-header__item.is-open > .site-header__link {
+  color: var(--color-text-hover);
+}
+
+.site-header__submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 131px;
+  min-width: 131px;
+  padding: 0;
+  transform: none;
+  background: var(--color-white);
+}
+
+.site-header__item.is-open > .site-header__submenu {
+  display: block;
+}
+
+.site-header__submenu-link {
+  display: flex;
+  align-items: center;
+  width: 131px;
+  height: 50px;
+  padding-inline: 20px;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 200ms ease;
+}
+
+.site-header__submenu-link:hover,
+.site-header__submenu-link:focus-visible {
+  color: var(--color-text-hover);
+}
+
+@media (width <= 1000px) {
+  .site-header {
+    height: 90px;
+    border-bottom: 1px solid var(--color-table-border);
+  }
+
+  .site-header__inner {
+    display: block;
+    padding: 0;
+  }
+
+  .site-header__logo {
+    display: grid;
+    place-items: center;
+    height: 55px;
+    margin: 0;
+    font-size: 30px;
+  }
+
+  .site-header__nav {
+    height: 35px;
+    box-shadow: inset 0 1px var(--color-table-border);
+  }
+
+  .site-header__menu {
+    position: relative;
+    justify-content: center;
+    width: fit-content;
+    height: 100%;
+    margin-inline: auto;
+    padding: 7px;
+    gap: 4px;
+  }
+
+  .site-header__item {
+    position: static;
+    height: 100%;
+  }
+  .site-header__link {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 4px;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .site-header__submenu {
+    position: absolute;
+    top: 35px;
+    left: 3px;
+    align-items: center;
+    justify-content: flex-start;
+    width: max-content;
+    min-width: 0;
+    height: 30px;
+    padding: 0;
+    gap: 4px;
+    transform: none;
+  }
+
+  .site-header:has(.site-header__item.is-open)::after {
+    position: absolute;
+    top: 90px;
+    right: 0;
+    left: 0;
+    border-top: 1px solid var(--color-table-border);
+    content: '';
+  }
+
+  .site-header__item.is-open > .site-header__submenu {
+    display: flex;
+  }
+  .site-header:has(.site-header__item.is-open) {
+    min-height: 121px;
+    border-bottom: 0;
+  }
+
+  .site-header__submenu-link {
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 8px 4px;
+    font-size: 14px;
+    line-height: 1;
+  }
+}
+
+@media (width <= 380px) {
+  .site-header__menu,
+  .site-header__submenu {
+    gap: 20px;
+  }
+  .site-header__link,
+  .site-header__submenu-link {
+    font-size: 13px;
+  }
+}

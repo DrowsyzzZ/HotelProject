@@ -1,1 +1,62 @@
 /* 이슈 #2에서 색상, 간격, 콘텐츠 너비 변수를 정의합니다. */
+@font-face {
+  font-family: 'KOROAD';
+  src: url('../assets/fonts/koroad-light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'KOROAD';
+  src: url('../assets/fonts/koroad-medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'KOROAD';
+  src: url('../assets/fonts/koroad-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-primary: 'KOROAD', sans-serif;
+
+  /* Basic */
+  --color-white: #fff;
+  --color-black: #000;
+
+  /* Text */
+  --color-text-hover: #818181;
+
+  /* Background */
+  --color-footer-bg: #1d1d1d;
+  --color-top-button-bg: #255f38;
+
+  /* Border and gray */
+  --color-table-border: #d8d8d8;
+  --color-gray-1: #efefef;
+  --color-gray-2: #e4e4e4;
+  --color-gray-3: #c7c7c7;
+
+  /* State */
+  --color-holiday: #ff635e;
+  --color-selected: #30bd5e;
+  --color-error: #f00;
+
+  /* Spacing */
+  --padding-horizontal: 15px;
+  --padding-vertical: 20px;
+
+  /* Layout */
+  --content-width: 1440px;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-weight: 300;
+}
