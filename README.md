@@ -47,3 +47,18 @@ yarn start
 - 이슈 하나를 완료할 때마다 관련 커밋을 남깁니다.
 - 자세한 순서는 [`docs/ISSUE_PLAN.md`](docs/ISSUE_PLAN.md)를 참고합니다.
 
+## Custom Elements
+
+다음 공통 요소는 반드시 Custom Element로 구현합니다.
+
+- `<app-header>`
+- `<app-footer>`
+- `<top-button>`
+
+반복 렌더링 또는 독립적인 상태 관리가 필요한 다음 요소도 Custom Element로 구현합니다.
+
+- `<room-card>`
+- `<room-gallery>`
+- `<reservation-calendar>`
+
+일반 버튼, 입력 필드, 제목, 가격표 셀은 네이티브 HTML 요소와 CSS 클래스 또는 렌더 함수로 구현합니다. 전역 디자인 스타일을 재사용할 수 있도록 Shadow DOM은 사용하지 않습니다.
