@@ -39,7 +39,7 @@
     {
       "id": 4,
       "name": "스위트",
-      "name_eng": "sweet",
+      "name_eng": "suite",
       "area": 200,
       "capacity": 6,
       "min": 4,
@@ -53,14 +53,26 @@
     {
       "id": 1,
       "name": "비수기",
-      "start_date": "2026-10-01",
-      "end_date": "2026-06-30"
+      "ranges": [
+        {
+          "start_month_day": "01-01",
+          "end_month_day": "06-30"
+        },
+        {
+          "start_month_day": "10-01",
+          "end_month_day": "12-31"
+        }
+      ]
     },
     {
       "id": 2,
       "name": "성수기",
-      "start_date": "2026-07-01",
-      "end_date": "2026-09-30"
+      "ranges": [
+        {
+          "start_month_day": "07-01",
+          "end_month_day": "09-30"
+        }
+      ]
     }
   ],
   "holiday": [
@@ -163,6 +175,136 @@
       "id": 20,
       "holiday_name": "크리스마스",
       "holiday_date": "2026-12-25"
+    },
+    {
+      "id": 21,
+      "holiday_name": "노동절",
+      "holiday_date": "2026-05-01"
+    },
+    {
+      "id": 22,
+      "holiday_name": "제헌절",
+      "holiday_date": "2026-07-17"
+    },
+    {
+      "id": 23,
+      "holiday_name": "신정",
+      "holiday_date": "2027-01-01"
+    },
+    {
+      "id": 24,
+      "holiday_name": "설날 연휴",
+      "holiday_date": "2027-02-06"
+    },
+    {
+      "id": 25,
+      "holiday_name": "설날",
+      "holiday_date": "2027-02-07"
+    },
+    {
+      "id": 26,
+      "holiday_name": "설날 연휴",
+      "holiday_date": "2027-02-08"
+    },
+    {
+      "id": 27,
+      "holiday_name": "대체공휴일(설날)",
+      "holiday_date": "2027-02-09"
+    },
+    {
+      "id": 28,
+      "holiday_name": "3·1절",
+      "holiday_date": "2027-03-01"
+    },
+    {
+      "id": 29,
+      "holiday_name": "노동절",
+      "holiday_date": "2027-05-01"
+    },
+    {
+      "id": 30,
+      "holiday_name": "대체공휴일(노동절)",
+      "holiday_date": "2027-05-03"
+    },
+    {
+      "id": 31,
+      "holiday_name": "어린이날",
+      "holiday_date": "2027-05-05"
+    },
+    {
+      "id": 32,
+      "holiday_name": "부처님 오신날",
+      "holiday_date": "2027-05-13"
+    },
+    {
+      "id": 33,
+      "holiday_name": "현충일",
+      "holiday_date": "2027-06-06"
+    },
+    {
+      "id": 34,
+      "holiday_name": "제헌절",
+      "holiday_date": "2027-07-17"
+    },
+    {
+      "id": 35,
+      "holiday_name": "대체공휴일(제헌절)",
+      "holiday_date": "2027-07-19"
+    },
+    {
+      "id": 36,
+      "holiday_name": "광복절",
+      "holiday_date": "2027-08-15"
+    },
+    {
+      "id": 37,
+      "holiday_name": "대체공휴일(광복절)",
+      "holiday_date": "2027-08-16"
+    },
+    {
+      "id": 38,
+      "holiday_name": "추석 연휴",
+      "holiday_date": "2027-09-14"
+    },
+    {
+      "id": 39,
+      "holiday_name": "추석",
+      "holiday_date": "2027-09-15"
+    },
+    {
+      "id": 40,
+      "holiday_name": "추석 연휴",
+      "holiday_date": "2027-09-16"
+    },
+    {
+      "id": 41,
+      "holiday_name": "개천절",
+      "holiday_date": "2027-10-03"
+    },
+    {
+      "id": 42,
+      "holiday_name": "대체공휴일(개천절)",
+      "holiday_date": "2027-10-04"
+    },
+    {
+      "id": 43,
+      "holiday_name": "한글날",
+      "holiday_date": "2027-10-09"
+    },
+    {
+      "id": 44,
+      "holiday_name": "대체공휴일(한글날)",
+      "holiday_date": "2027-10-11"
+    },
+    {
+      "id": 45,
+      "holiday_name": "크리스마스",
+      "holiday_date": "2027-12-25"
+    },
+    {
+      "id": 46,
+      "holiday_name": "대체공휴일(크리스마스)",
+      "holiday_date": "2027-12-27"
     }
   ],
   "price": [
@@ -233,186 +375,6 @@
   ],
   "reservation": [
     {
-      "id": 1,
-      "customer_name": "김철수",
-      "phone_number": "01012345678",
-      "room_id": 1,
-      "check_in_date": "2026-05-01",
-      "check_out_date": "2026-05-03",
-      "number_of_guests": 2,
-      "total_price": 660000
-    },
-    {
-      "id": 2,
-      "customer_name": "박지영",
-      "phone_number": "01023456789",
-      "room_id": 3,
-      "check_in_date": "2026-05-07",
-      "check_out_date": "2026-05-09",
-      "number_of_guests": 3,
-      "total_price": 540000
-    },
-    {
-      "id": 3,
-      "customer_name": "이민호",
-      "phone_number": "01034567890",
-      "room_id": 2,
-      "check_in_date": "2026-05-03",
-      "check_out_date": "2026-05-06",
-      "number_of_guests": 2,
-      "total_price": 580000
-    },
-    {
-      "id": 4,
-      "customer_name": "최수진",
-      "phone_number": "01045678901",
-      "room_id": 4,
-      "check_in_date": "2026-05-09",
-      "check_out_date": "2026-05-12",
-      "number_of_guests": 3,
-      "total_price": 750000
-    },
-    {
-      "id": 5,
-      "customer_name": "정우성",
-      "phone_number": "01056789012",
-      "room_id": 3,
-      "check_in_date": "2026-05-10",
-      "check_out_date": "2026-05-14",
-      "number_of_guests": 4,
-      "total_price": 1000000
-    },
-    {
-      "id": 6,
-      "customer_name": "김수미",
-      "phone_number": "01067890123",
-      "room_id": 3,
-      "check_in_date": "2026-06-15",
-      "check_out_date": "2026-06-18",
-      "number_of_guests": 4,
-      "total_price": 1000000
-    },
-    {
-      "id": 7,
-      "customer_name": "박상혁",
-      "phone_number": "01078901234",
-      "room_id": 4,
-      "check_in_date": "2026-06-01",
-      "check_out_date": "2026-06-05",
-      "number_of_guests": 4,
-      "total_price": 1000000
-    },
-    {
-      "id": 8,
-      "customer_name": "이혜진",
-      "phone_number": "01089012345",
-      "room_id": 4,
-      "check_in_date": "2026-06-03",
-      "check_out_date": "2026-06-06",
-      "number_of_guests": 4,
-      "total_price": 1000000
-    },
-    {
-      "id": 9,
-      "customer_name": "김하늘",
-      "phone_number": "01090123456",
-      "room_id": 1,
-      "check_in_date": "2026-06-07",
-      "check_out_date": "2026-06-10",
-      "number_of_guests": 2,
-      "total_price": 600000
-    },
-    {
-      "id": 10,
-      "customer_name": "오진우",
-      "phone_number": "01001234567",
-      "room_id": 2,
-      "check_in_date": "2026-06-10",
-      "check_out_date": "2026-06-12",
-      "number_of_guests": 3,
-      "total_price": 864000
-    },
-    {
-      "room_id": 1,
-      "check_in_date": "2026-06-19",
-      "check_out_date": "2026-06-20",
-      "total_price": 150000,
-      "number_of_guests": 0,
-      "customer_name": "test",
-      "phone_number": "0103456789",
-      "id": 11
-    },
-    {
-      "room_id": 2,
-      "check_in_date": "2026-07-03",
-      "check_out_date": "2026-07-04",
-      "total_price": 200000,
-      "number_of_guests": 0,
-      "customer_name": "테스트",
-      "phone_number": "01012634578",
-      "id": 12
-    },
-    {
-      "room_id": 3,
-      "check_in_date": "2026-07-16",
-      "check_out_date": "2026-07-17",
-      "total_price": 250000,
-      "number_of_guests": 2,
-      "customer_name": "test",
-      "phone_number": "01045678945",
-      "id": 13
-    },
-    {
-      "room_id": 2,
-      "check_in_date": "2026-07-30",
-      "check_out_date": "2026-08-02",
-      "total_price": 910000,
-      "number_of_guests": 4,
-      "customer_name": "123",
-      "phone_number": "0101234568",
-      "id": 14
-    },
-    {
-      "id": 15,
-      "room_id": 1,
-      "check_in_date": "2026-07-03",
-      "check_out_date": "2026-07-05",
-      "total_price": 380000,
-      "number_of_guests": 2,
-      "customer_name": "이준혁",
-      "phone_number": "01012312345"
-    },
-    {
-      "id": 16,
-      "room_id": 2,
-      "check_in_date": "2026-07-10",
-      "check_out_date": "2026-07-13",
-      "total_price": 700000,
-      "number_of_guests": 3,
-      "customer_name": "박미나",
-      "phone_number": "01098765432"
-    },
-    {
-      "id": 17,
-      "room_id": 3,
-      "check_in_date": "2026-07-17",
-      "check_out_date": "2026-07-20",
-      "total_price": 810000,
-      "number_of_guests": 2,
-      "customer_name": "최동훈",
-      "phone_number": "01055566677"
-    },
-    {
-      "id": 18,
-      "room_id": 4,
-      "check_in_date": "2026-07-25",
-      "check_out_date": "2026-07-28",
-      "total_price": 920000,
-      "number_of_guests": 4,
-      "customer_name": "강지은",
-      "phone_number": "01033344455"
-    },
-    {
       "id": 19,
       "room_id": 2,
       "check_in_date": "2026-08-07",
@@ -471,6 +433,66 @@
       "number_of_guests": 2,
       "customer_name": "오예린",
       "phone_number": "01099900011"
+    },
+    {
+      "id": 25,
+      "room_id": 1,
+      "check_in_date": "2026-10-02",
+      "check_out_date": "2026-10-04",
+      "total_price": 380000,
+      "number_of_guests": 2,
+      "customer_name": "김도윤",
+      "phone_number": "01032145678"
+    },
+    {
+      "id": 26,
+      "room_id": 3,
+      "check_in_date": "2026-10-09",
+      "check_out_date": "2026-10-12",
+      "total_price": 810000,
+      "number_of_guests": 4,
+      "customer_name": "서지안",
+      "phone_number": "01043256789"
+    },
+    {
+      "id": 27,
+      "room_id": 2,
+      "check_in_date": "2026-11-13",
+      "check_out_date": "2026-11-15",
+      "total_price": 400000,
+      "number_of_guests": 3,
+      "customer_name": "문하준",
+      "phone_number": "01054367890"
+    },
+    {
+      "id": 28,
+      "room_id": 4,
+      "check_in_date": "2026-12-24",
+      "check_out_date": "2026-12-27",
+      "total_price": 850000,
+      "number_of_guests": 5,
+      "customer_name": "배서윤",
+      "phone_number": "01065478901"
+    },
+    {
+      "id": 29,
+      "room_id": 1,
+      "check_in_date": "2027-01-15",
+      "check_out_date": "2027-01-17",
+      "total_price": 360000,
+      "number_of_guests": 2,
+      "customer_name": "정시우",
+      "phone_number": "01076589012"
+    },
+    {
+      "id": 30,
+      "room_id": 2,
+      "check_in_date": "2027-02-06",
+      "check_out_date": "2027-02-09",
+      "total_price": 750000,
+      "number_of_guests": 3,
+      "customer_name": "한유나",
+      "phone_number": "01087690123"
     }
   ]
 }

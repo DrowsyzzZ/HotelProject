@@ -1,1 +1,297 @@
-/* 이슈 #5부터 예약 관련 페이지 스타일을 정의합니다. */
+.reservation-hero {
+  position: relative;
+  display: grid;
+  height: 400px;
+  place-items: center;
+  color: var(--color-white);
+  background:
+    linear-gradient(rgb(0 0 0 / 42%), rgb(0 0 0 / 42%)),
+    url('../assets/images/reservation-hero.jpg') center 55% / cover no-repeat;
+}
+
+.reservation-hero__content {
+  text-align: center;
+  line-height: 1;
+}
+
+.reservation-hero h1 {
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.reservation-hero p {
+  margin-top: 15px;
+  font-size: 25px;
+}
+
+.reservation-info {
+  line-height: 1;
+}
+
+.reservation-info__title {
+  margin-bottom: 59px;
+  font-size: 30px;
+  font-weight: 300;
+  text-align: center;
+}
+
+.price-table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--color-table-border);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.price-table-scroll.is-scrollable {
+  cursor: grab;
+}
+
+.price-table-scroll.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.price-table-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.price-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.price-table caption {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.price-table__capacity-column {
+  width: 80px;
+}
+
+.price-table__season-range {
+  white-space: nowrap;
+}
+
+.price-table th,
+.price-table td {
+  height: 50px;
+  padding: 0;
+  border-right: 1px solid var(--color-table-border);
+  border-bottom: 1px solid var(--color-table-border);
+  vertical-align: middle;
+  transition: background-color 40ms ease;
+}
+
+.price-table tr > :last-child {
+  border-right: 0;
+}
+
+.price-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.price-table thead th {
+  background: var(--color-table-border);
+  border-right: 0;
+  border-bottom: 0;
+  font-weight: 300;
+}
+
+.price-table thead tr:first-child th {
+  height: 100px;
+}
+
+.price-table thead tr:last-child th {
+  height: 54px;
+}
+
+.price-table tbody th {
+  font-weight: 300;
+}
+
+.price-table tbody tr:not(.price-table__message):hover > * {
+  background: var(--color-table-border);
+}
+
+.price-table__message td {
+  color: var(--color-text-hover);
+}
+
+.price-table__message--error td {
+  color: var(--color-error);
+}
+
+.stay-rules {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 59px;
+}
+
+.stay-rule {
+  height: 265px;
+  padding: 60px 20px 30px;
+  text-align: center;
+}
+
+.stay-rule--light {
+  background: var(--color-gray-1);
+}
+
+.stay-rule--medium {
+  background: var(--color-gray-2);
+}
+
+.stay-rule--dark {
+  background: var(--color-gray-3);
+}
+
+.stay-rule h3 {
+  font-size: 25px;
+  font-weight: 300;
+}
+
+.stay-rule ul {
+  margin-top: 34px;
+}
+
+.stay-rule li {
+  font-size: 14px;
+}
+
+.stay-rule li + li {
+  margin-top: 9px;
+}
+
+.cancellation-policy {
+  margin-top: 59px;
+  border: 1px solid var(--color-table-border);
+  height: 228px;
+}
+
+.cancellation-policy h3 {
+  padding: 17.5px 20px;
+  background: var(--color-gray-2);
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.cancellation-policy__content {
+  padding: 22px 20px;
+  height: 178px;
+  font-size: 14px;
+}
+
+.cancellation-policy p + p {
+  margin-top: 16px;
+}
+
+@media (max-width: 1000px) {
+  .reservation-hero {
+    height: 110px;
+    background-position: center 35%;
+  }
+
+  .reservation-hero h1 {
+    font-size: 20px;
+  }
+
+  .reservation-hero p {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+
+  .reservation-info {
+    width: 100%;
+    padding-block: 20px;
+  }
+
+  .reservation-info__title {
+    margin-bottom: 30px;
+    font-size: 14px;
+  }
+
+  .price-table-scroll {
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .price-table {
+    min-width: 560px;
+  }
+
+  .price-table th,
+  .price-table td {
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .price-table thead tr:first-child th {
+    height: 44px;
+  }
+
+  .price-table thead tr:last-child th {
+    height: 30px;
+  }
+
+  .stay-rules {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 30px;
+  }
+
+  .stay-rule {
+    height: auto;
+    min-height: 0;
+    padding: 30px 20px;
+  }
+
+  .stay-rule h3 {
+    font-size: 14px;
+  }
+
+  .stay-rule ul {
+    margin-top: 15px;
+    text-align: start;
+  }
+
+  .stay-rule li + li {
+    margin-top: 6px;
+  }
+
+  .stay-rule li,
+  .cancellation-policy p {
+    font-size: 14px;
+  }
+
+  .cancellation-policy {
+    height: auto;
+    margin-top: 30px;
+  }
+
+  .cancellation-policy h3 {
+    padding: 18px 20px;
+  }
+
+  .cancellation-policy__content {
+    padding: 20px;
+    height: auto;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 730px) {
+  .stay-rules {
+    grid-template-columns: 1fr;
+  }
+}
