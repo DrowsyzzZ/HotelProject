@@ -179,14 +179,3 @@ app-header {
     line-height: 1;
   }
 }
-
-@media (width <= 380px) {
-  .site-header__menu,
-  .site-header__submenu {
-    gap: 20px;
-  }
-  .site-header__link,
-  .site-header__submenu-link {
-    font-size: 13px;
-  }
-}
