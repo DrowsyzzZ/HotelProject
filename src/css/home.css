@@ -68,6 +68,7 @@
   width: 147px;
   height: 48px;
   border: 1px solid var(--color-white);
+  border-radius: 2px;
   font-size: 22px;
   place-items: center;
   line-height: 1.2;
@@ -85,10 +86,24 @@
 .hero-slider .swiper-pagination {
   position: absolute;
   bottom: 36px;
-  left: 50%;
+  left: 0;
   z-index: 2;
+  width: 100%;
   min-height: 12px;
-  transform: translateX(-50%);
+  transform: none;
+}
+
+.hero-slider .swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--color-white);
+  margin-inline: 5px;
+  background: transparent;
+  opacity: 100%;
+}
+
+.hero-slider .swiper-pagination-bullet-active {
+  background: var(--color-white);
 }
 
 .home-collections {

@@ -1,4 +1,20 @@
-// 이슈 #4에서 Swiper 초기화 코드를 추가합니다.
+import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.mjs';
+
+const heroSlider = new Swiper('.hero-slider', {
+  loop: true,
+  speed: 800,
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: '.hero-slider .swiper-pagination',
+    clickable: true,
+  },
+  keyboard: {
+    enabled: true,
+  },
+});
 
 const roomModal = document.querySelector('.room-modal');
 const roomModalImage = roomModal?.querySelector('.room-modal__image');
