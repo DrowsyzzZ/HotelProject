@@ -13,8 +13,8 @@ const NAV_ITEMS = [
     { label: 'ROOM 3', href: 'html/room-detail.html?room=3' },
   ] },
   { key: 'reservation', label: 'RESERVATION', children: [
-    { label: '예약 안내', href: 'html/reservation-guide.html' },
-    { label: '실시간 예약', href: 'html/room-select.html' },
+    { label: '예약 안내', href: 'html/reservation-guide.html', enabled: true },
+    { label: '실시간 예약', href: 'html/room-select.html', enabled: true },
   ] },
   { key: 'community', label: 'COMMUNITY', children: [
     { label: '공지사항', href: 'index.html#notice' },
@@ -47,7 +47,8 @@ class AppHeader extends HTMLElement {
       const isCurrent = currentPath.includes(item.key);
       const children = item.children.map(child => `
         <li class="site-header__submenu-item">
-          <a class="site-header__submenu-link" href="${new URL(child.href, srcRoot).href}">${child.label}</a>
+          <a class="site-header__submenu-link" href="${new URL(child.href, srcRoot).href}"
+            ${child.enabled ? '' : 'aria-disabled="true"'}>${child.label}</a>
         </li>
       `).join('');
 
@@ -75,6 +76,22 @@ class AppHeader extends HTMLElement {
   }
 
   bindEvents() {
+    const logo = this.querySelector('.site-header__logo');
+
+    logo.addEventListener('click', event => {
+      const homeUrl = new URL(logo.href);
+
+      if (window.location.pathname !== homeUrl.pathname) return;
+
+      event.preventDefault();
+      window.history.replaceState(null, '', homeUrl.pathname);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    this.querySelectorAll('.site-header__submenu-link[aria-disabled="true"]').forEach(link => {
+      link.addEventListener('click', event => event.preventDefault());
+    });
+
     this.querySelectorAll('.site-header__item').forEach(item => {
       const button = item.querySelector('.site-header__link');
       const key = item.dataset.menu;

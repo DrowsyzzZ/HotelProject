@@ -26,13 +26,17 @@ class AppFooter extends HTMLElement {
         </address>
 
         <div class="site-footer__links">
-          <a href="#">이용약관</a>
-          <a href="#">개인정보처리방침</a>
+          <a href="#" aria-disabled="true">이용약관</a>
+          <a href="#" aria-disabled="true">개인정보처리방침</a>
         </div>
 
         <p class="site-footer__copyright">Copyright © 2025 예약연습 All rights reserved.</p>
       </footer>
     `;
+
+    this.querySelectorAll('.site-footer__links a').forEach(link => {
+      link.addEventListener('click', event => event.preventDefault());
+    });
   }
 }
 
