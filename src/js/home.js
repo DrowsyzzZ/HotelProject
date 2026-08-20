@@ -1,1 +1,92 @@
-// 이슈 #3과 #4에서 메인 페이지 기능을 구현합니다.
+// 이슈 #4에서 Swiper 초기화 코드를 추가합니다.
+
+const roomModal = document.querySelector('.room-modal');
+const roomModalImage = roomModal?.querySelector('.room-modal__image');
+const roomModalClose = roomModal?.querySelector('.room-modal__close');
+const roomButtons = document.querySelectorAll('.rooms-list__item');
+const horizontalScrollAreas = document.querySelectorAll('.horizontal-scroll');
+
+horizontalScrollAreas.forEach((scrollArea) => {
+  let startX = 0;
+  let startScrollLeft = 0;
+  let isDragging = false;
+  let blockClick = false;
+
+  scrollArea.addEventListener('dragstart', (event) => event.preventDefault());
+
+  scrollArea.addEventListener('pointerdown', (event) => {
+    if (event.pointerType !== 'mouse' || event.button !== 0) return;
+
+    startX = event.clientX;
+    startScrollLeft = scrollArea.scrollLeft;
+    isDragging = true;
+    blockClick = false;
+  });
+
+  scrollArea.addEventListener('pointermove', (event) => {
+    if (!isDragging) return;
+
+    const distance = event.clientX - startX;
+
+    if (Math.abs(distance) > 5) {
+      blockClick = true;
+      scrollArea.classList.add('is-dragging');
+
+      if (!scrollArea.hasPointerCapture(event.pointerId)) {
+        scrollArea.setPointerCapture(event.pointerId);
+      }
+    }
+
+    if (blockClick) scrollArea.scrollLeft = startScrollLeft - distance;
+  });
+
+  const stopDragging = (event) => {
+    if (!isDragging) return;
+
+    isDragging = false;
+    scrollArea.classList.remove('is-dragging');
+
+    if (scrollArea.hasPointerCapture(event.pointerId)) {
+      scrollArea.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  scrollArea.addEventListener('pointerup', stopDragging);
+  scrollArea.addEventListener('pointercancel', stopDragging);
+  scrollArea.addEventListener(
+    'click',
+    (event) => {
+      if (!blockClick) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      blockClick = false;
+    },
+    true,
+  );
+});
+
+roomButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const image = button.querySelector('img');
+
+    if (!roomModal || !roomModalImage || !image) return;
+
+    roomModalImage.src = image.src;
+    roomModalImage.alt = image.alt;
+    roomModal.showModal();
+  });
+});
+
+roomModalClose?.addEventListener('click', () => roomModal?.close());
+
+roomModal?.addEventListener('click', (event) => {
+  if (event.target === roomModal) roomModal.close();
+});
+
+roomModal?.addEventListener('close', () => {
+  if (!roomModalImage) return;
+
+  roomModalImage.src = '';
+  roomModalImage.alt = '';
+});

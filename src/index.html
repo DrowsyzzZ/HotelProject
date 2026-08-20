@@ -7,13 +7,109 @@
     <title>Hotel</title>
 
     <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/home.css" />
     <script type="module" src="./js/components/index.js"></script>
+    <script type="module" src="./js/home.js"></script>
   </head>
 
   <body>
     <app-header></app-header>
 
-    <main></main>
+    <main class="home-main">
+      <section class="hero-slider swiper" aria-label="호텔 주요 소식">
+        <div class="swiper-wrapper">
+          <article class="hero-slider__slide swiper-slide">
+            <img src="./assets/images/main-slide-01.jpg" alt="밝은 호텔 침실의 침대 위에 놓인 아침 식사" />
+            <div class="hero-slider__content">
+              <h1>SWEET MOMENT</h1>
+              <a href="#rooms">SEE MORE</a>
+            </div>
+          </article>
+          <article class="hero-slider__slide swiper-slide">
+            <img src="./assets/images/main-slide-02.jpg" alt="야외 수영장이 있는 호텔 풍경" />
+            <div class="hero-slider__content">
+              <h2>URBAN RESORT</h2>
+              <a href="#rooms">SEE MORE</a>
+            </div>
+          </article>
+          <article class="hero-slider__slide swiper-slide">
+            <img src="./assets/images/main-slide-03.jpg" alt="휴식을 위한 호텔 테라스" />
+            <div class="hero-slider__content">
+              <h2>RELAX &amp; RELIEF</h2>
+              <a href="#rooms">SEE MORE</a>
+            </div>
+          </article>
+        </div>
+        <div class="swiper-pagination" aria-label="슬라이드 페이지"></div>
+      </section>
+
+      <div class="home-collections">
+        <section class="home-section" id="rooms" aria-labelledby="rooms-title">
+          <h2 class="home-section__title" id="rooms-title">ROOMS</h2>
+          <div class="horizontal-scroll" tabindex="0" aria-label="객실 목록">
+            <div class="horizontal-scroll__track rooms-list">
+              <button class="rooms-list__item" type="button" aria-label="첫 번째 객실 이미지 크게 보기">
+                <img src="./assets/images/room-card-01.jpg" alt="밝은 원목 인테리어의 호텔 객실" />
+              </button>
+              <button class="rooms-list__item" type="button" aria-label="두 번째 객실 이미지 크게 보기">
+                <img src="./assets/images/room-card-02.jpg" alt="트윈 침대가 있는 호텔 객실" />
+              </button>
+              <button class="rooms-list__item" type="button" aria-label="세 번째 객실 이미지 크게 보기">
+                <img src="./assets/images/room-card-03.jpg" alt="넓은 거실 공간이 있는 호텔 객실" />
+              </button>
+              <button class="rooms-list__item" type="button" aria-label="네 번째 객실 이미지 크게 보기">
+                <img src="./assets/images/room-card-04.jpg" alt="고급스러운 원목 바닥의 호텔 객실" />
+              </button>
+              <button class="rooms-list__item" type="button" aria-label="다섯 번째 객실 이미지 크게 보기">
+                <img src="./assets/images/room-card-05.jpg" alt="두 개의 침대가 있는 호텔 객실" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="home-section" id="event" aria-labelledby="event-title">
+          <h2 class="home-section__title" id="event-title">EVENT</h2>
+          <div class="horizontal-scroll" tabindex="0" aria-label="이벤트 목록">
+            <div class="horizontal-scroll__track event-list">
+              <article class="event-card">
+                <img class="event-card__image" src="./assets/images/event-spring.jpg" alt="봄꽃이 핀 들판" />
+                <span class="event-card__title">봄 특가 이벤트</span>
+              </article>
+              <article class="event-card">
+                <img class="event-card__image" src="./assets/images/event-may.jpg" alt="호텔 로비 전경" />
+                <span class="event-card__title">5월 주요행사</span>
+              </article>
+              <article class="event-card">
+                <img class="event-card__image" src="./assets/images/event-new-room.jpg" alt="새롭게 단장한 호텔 침대" />
+                <span class="event-card__title">새로운 객실을 기대해 주세요.</span>
+              </article>
+              <article class="event-card">
+                <img class="event-card__image" src="./assets/images/event-spa.jpg" alt="꽃과 함께 준비된 스파 용품" />
+                <span class="event-card__title">스파 프로그램 할인</span>
+              </article>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="best-hotel" id="best-hotel" aria-labelledby="best-hotel-title">
+        <div class="best-hotel__content">
+          <i class="fa-solid fa-award best-hotel__icon" aria-hidden="true"></i>
+          <h2 id="best-hotel-title">2024 BEST HOTEL</h2>
+          <p>
+            Can one ever remember love<br />
+            Its like trying to summon up<br />
+            the smell of rose sin a cellar.<br />
+            you might see a rose, but never the perfume.
+          </p>
+        </div>
+      </section>
+
+      <dialog class="room-modal" aria-label="객실 이미지 크게 보기">
+        <button class="room-modal__close" type="button" aria-label="이미지 닫기">&times;</button>
+        <img class="room-modal__image" src="" alt="" />
+      </dialog>
+    </main>
 
     <app-footer></app-footer>
     <top-button></top-button>
