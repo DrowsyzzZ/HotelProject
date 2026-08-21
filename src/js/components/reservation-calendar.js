@@ -46,6 +46,25 @@ class ReservationCalendar extends HTMLElement {
     return this._roomId;
   }
 
+  set readOnly(value) {
+    this._readOnly = Boolean(value);
+    if (this.isConnected) this.render();
+  }
+
+  get readOnly() {
+    return Boolean(this._readOnly);
+  }
+
+  setSelection(checkIn, checkOut) {
+    this.checkIn = checkIn ? parseDate(checkIn) : null;
+    this.checkOut = checkOut ? parseDate(checkOut) : null;
+
+    if (this.checkIn) {
+      this.visibleMonth = new Date(this.checkIn.getFullYear(), this.checkIn.getMonth(), 1);
+    }
+    if (this.isConnected) this.render();
+  }
+
   connectedCallback() {
     this.render();
     if (this._roomId) this.loadAvailability();
@@ -159,7 +178,7 @@ class ReservationCalendar extends HTMLElement {
       if (isCheckIn) classes.push('is-check-in');
       if (isCheckOut) classes.push('is-check-out');
 
-      const disabled = isPast || isBooked || this.isLoading || Boolean(this.errorMessage);
+      const disabled = this.readOnly || isPast || isBooked || this.isLoading || Boolean(this.errorMessage);
       const status = isBooked ? '예약완료' : isCheckIn ? '입실' : isCheckOut ? '퇴실' : isHoliday ? '공휴일' : '';
       const holidayName = isHoliday ? `, ${this.holidays.get(dateKey)}` : '';
       const label = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일${holidayName}${isBooked ? ', 예약 완료' : ''}`;

@@ -26,3 +26,13 @@ export const getReservations = async roomId => {
   const reservations = await fetchCollection('reservation');
   return reservations.filter(reservation => Number(reservation.room_id) === Number(roomId));
 };
+export async function createReservation(reservation) {
+  const response = await fetch(`${API_ORIGIN}/reservation`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(reservation),
+  });
+
+  if (!response.ok) throw new Error(`예약을 등록하지 못했습니다. (${response.status})`);
+  return response.json();
+}

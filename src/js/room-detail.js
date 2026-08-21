@@ -2,6 +2,8 @@ import { getHolidays, getPrices, getRoom, getSeasons } from './api.js';
 import { calculateReservationPrice } from './reservation-pricing.js';
 
 const detail = document.querySelector('#room-detail');
+const reservationFormPage = new URL('../html/reservation-form.html', import.meta.url);
+const RESERVATION_DRAFT_KEY = 'hotelReservationDraft';
 const roomIdValue = new URLSearchParams(window.location.search).get('roomId');
 const roomId = Number(roomIdValue);
 
@@ -76,31 +78,37 @@ async function initializePriceCalculation(room) {
   const calendar = detail.querySelector('reservation-calendar');
   const extraGuestSelect = detail.querySelector('#extra-people');
   const totalPrice = detail.querySelector('.booking-panel__total-price');
+  const submitButton = detail.querySelector('.booking-panel__submit');
   let stayDates = [];
+  let selectedRange = { checkIn: null, checkOut: null, nights: 0 };
+  let priceResult = null;
   let pricingData;
 
   function updateTotal() {
     if (!pricingData || stayDates.length === 0) {
+      priceResult = null;
       totalPrice.textContent = '0';
       return;
     }
 
     try {
-      const result = calculateReservationPrice({
+      priceResult = calculateReservationPrice({
         roomId: room.id,
         stayDates,
         extraGuests: Number(extraGuestSelect.value),
         ...pricingData,
       });
-      totalPrice.textContent = result.totalPrice.toLocaleString('ko-KR');
+      totalPrice.textContent = priceResult.totalPrice.toLocaleString('ko-KR');
     } catch (error) {
       console.error(error);
+      priceResult = null;
       totalPrice.textContent = '계산 불가';
     }
   }
 
   calendar.addEventListener('date-range-change', event => {
     stayDates = event.detail.stayDates;
+    selectedRange = event.detail;
     updateTotal();
   });
   extraGuestSelect.addEventListener('change', updateTotal);
@@ -108,6 +116,29 @@ async function initializePriceCalculation(room) {
     extraGuestSelect.value = '0';
     stayDates = [];
     updateTotal();
+  });
+  submitButton.addEventListener('click', () => {
+    if (!selectedRange.checkIn || !selectedRange.checkOut || !priceResult) {
+      calendar.showWarning('입실일과 퇴실일을 선택해 주세요.');
+      return;
+    }
+
+    const extraGuests = Number(extraGuestSelect.value);
+    sessionStorage.setItem(RESERVATION_DRAFT_KEY, JSON.stringify({
+      roomId: room.id,
+      roomName: room.name,
+      roomNameEng: room.name_eng,
+      baseGuests: room.min,
+      extraGuests,
+      totalGuests: room.min + extraGuests,
+      checkIn: selectedRange.checkIn,
+      checkOut: selectedRange.checkOut,
+      nights: selectedRange.nights,
+      stayDates,
+      totalPrice: priceResult.totalPrice,
+      createdAt: new Date().toISOString(),
+    }));
+    window.location.href = reservationFormPage.href;
   });
 
   try {

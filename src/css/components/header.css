@@ -1,10 +1,14 @@
 app-header {
   display: block;
+  height: 240px;
 }
 
 .site-header {
   z-index: 100;
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   height: 240px;
   background: var(--color-white);
   color: var(--color-black);
@@ -93,6 +97,10 @@ app-header {
 }
 
 @media (width <= 1000px) {
+  app-header {
+    height: 90px;
+  }
+
   .site-header {
     height: 90px;
     border-bottom: 1px solid var(--color-table-border);

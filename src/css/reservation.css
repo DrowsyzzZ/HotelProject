@@ -197,6 +197,156 @@
   margin-top: 16px;
 }
 
+.reservation-registration {
+  padding-block: 60px;
+}
+
+.reservation-registration > h2 {
+  margin-bottom: 60px;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+  text-align: center;
+}
+
+.reservation-form {
+  display: grid;
+  max-width: 1260px;
+  margin-inline: auto;
+  grid-template-columns: minmax(0, 1fr) minmax(460px, 560px);
+  column-gap: 60px;
+}
+
+.reservation-form__fields {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reservation-form__field {
+  display: grid;
+  min-height: 50px;
+  grid-template-columns: 100px minmax(0, 1fr);
+  align-items: start;
+}
+
+.reservation-form__field > label {
+  padding-top: 15px;
+  font-size: 16px;
+}
+
+.reservation-form__control,
+.reservation-form__control input,
+.reservation-form__field > input {
+  width: 100%;
+}
+
+.reservation-form__control input,
+.reservation-form__field > input {
+  height: 50px;
+  padding-inline: 15px;
+  border: 1px solid var(--color-table-border);
+  border-radius: 0;
+  color: var(--color-black);
+  background: var(--color-white);
+  font: inherit;
+  font-size: 14px;
+}
+
+.reservation-form__field > input[readonly] {
+  background: var(--color-gray-1);
+}
+
+.reservation-form__control input.is-invalid {
+  border-color: var(--color-error);
+}
+
+.reservation-form__error {
+  min-height: 20px;
+  padding-top: 7px;
+  color: var(--color-error);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.reservation-form__field--date {
+  display: none;
+}
+
+.reservation-form__total {
+  display: flex;
+  min-height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+  font-size: 16px;
+}
+
+.reservation-form__total strong {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.reservation-form__total small {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.reservation-form__calendar {
+  width: 100%;
+  min-width: 0;
+  height: 500px;
+}
+
+.reservation-form__status {
+  min-height: 24px;
+  grid-column: 1 / -1;
+  margin-top: 30px;
+  color: var(--color-error);
+  font-size: 14px;
+  text-align: center;
+}
+
+.reservation-form__status.is-success {
+  color: var(--color-selected);
+}
+
+.reservation-form__actions {
+  display: grid;
+  width: min(100%, 560px);
+  grid-column: 1 / -1;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin: 30px auto 0;
+}
+
+.reservation-form__actions button {
+  min-height: 52px;
+  padding: 15px 25px;
+  border: 1px solid var(--color-table-border);
+  border-radius: 0;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reservation-form__cancel {
+  color: var(--color-black);
+  background: var(--color-white);
+}
+
+.reservation-form__submit {
+  color: var(--color-white);
+  background: var(--color-footer-bg);
+}
+
+.reservation-form__submit:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
 @media (max-width: 1000px) {
   .reservation-hero {
     height: 110px;
@@ -287,6 +437,73 @@
     padding: 20px;
     height: auto;
     min-height: 0;
+  }
+
+  .reservation-registration {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .reservation-registration > h2 {
+    margin-bottom: 30px;
+    font-size: 14px;
+  }
+
+  .reservation-form {
+    grid-template-columns: 1fr;
+  }
+
+  .reservation-form__fields {
+    gap: 15px;
+  }
+
+  .reservation-form__field {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .reservation-form__field > label {
+    padding-top: 0;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .reservation-form__control input,
+  .reservation-form__field > input {
+    height: 50px;
+    padding-inline: 20px;
+    font-size: 14px;
+  }
+
+  .reservation-form__field--date {
+    display: grid;
+  }
+
+  .reservation-form__calendar {
+    display: none;
+  }
+
+  .reservation-form__total {
+    min-height: 80px;
+    padding-inline: 20px;
+  }
+
+  .reservation-form__total strong {
+    font-size: 24px;
+  }
+
+  .reservation-form__status {
+    margin-top: 10px;
+  }
+
+  .reservation-form__actions {
+    width: 100%;
+    gap: 25px;
+    margin-top: 20px;
+  }
+
+  .reservation-form__actions button {
+    min-height: 70px;
   }
 }
 

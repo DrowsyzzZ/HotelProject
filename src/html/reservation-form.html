@@ -6,11 +6,82 @@
     <title>예약 등록 | Hotel</title>
     <link rel="stylesheet" href="../css/common.css" />
     <link rel="stylesheet" href="../css/reservation.css" />
+    <link rel="stylesheet" href="../css/rooms.css" />
     <script type="module" src="../js/components/index.js"></script>
+    <script type="module" src="../js/reservation-form.js"></script>
   </head>
   <body>
     <app-header></app-header>
-    <main></main>
+    <main class="reservation-form-page">
+      <section class="reservation-hero reservation-hero--live" aria-labelledby="reservation-form-hero-title">
+        <div class="reservation-hero__content">
+          <h1 id="reservation-form-hero-title">RESERVATION</h1>
+          <p>실시간예약</p>
+        </div>
+      </section>
+
+      <section class="reservation-registration inner" aria-labelledby="reservation-registration-title">
+        <h2 id="reservation-registration-title">예약 등록</h2>
+
+        <form class="reservation-form" id="reservation-form" novalidate>
+          <div class="reservation-form__fields">
+            <div class="reservation-form__field">
+              <label for="reservation-room">ROOM</label>
+              <input id="reservation-room" type="text" readonly />
+            </div>
+
+            <div class="reservation-form__field">
+              <label for="reservation-extra-guests">추가인원</label>
+              <input id="reservation-extra-guests" type="text" readonly />
+            </div>
+
+            <div class="reservation-form__field reservation-form__field--date">
+              <label for="reservation-check-in">입실</label>
+              <input id="reservation-check-in" type="text" readonly />
+            </div>
+
+            <div class="reservation-form__field reservation-form__field--date">
+              <label for="reservation-check-out">퇴실</label>
+              <input id="reservation-check-out" type="text" readonly />
+            </div>
+
+            <div class="reservation-form__field">
+              <label for="customer-name">예약명</label>
+              <div class="reservation-form__control">
+                <input id="customer-name" name="customerName" type="text" maxlength="20"
+                  autocomplete="name" placeholder="예약명을 입력해 주세요." aria-describedby="customer-name-error" />
+                <p class="reservation-form__error" id="customer-name-error"></p>
+              </div>
+            </div>
+
+            <div class="reservation-form__field">
+              <label for="phone-number">전화번호</label>
+              <div class="reservation-form__control">
+                <input id="phone-number" name="phoneNumber" type="tel" maxlength="11"
+                  inputmode="numeric" autocomplete="tel" placeholder="-를 제외하고 입력해 주세요." aria-describedby="phone-number-error" />
+                <p class="reservation-form__error" id="phone-number-error"></p>
+              </div>
+            </div>
+
+            <div class="reservation-form__total">
+              <span>총 합계</span>
+              <strong><span id="reservation-total-price">0</span><small>원</small></strong>
+            </div>
+          </div>
+
+          <div class="reservation-form__calendar">
+            <reservation-calendar></reservation-calendar>
+          </div>
+
+          <p class="reservation-form__status" id="reservation-form-status" role="status" aria-live="polite"></p>
+
+          <div class="reservation-form__actions">
+            <button class="reservation-form__cancel" type="button">취소</button>
+            <button class="reservation-form__submit" type="submit">예약하기</button>
+          </div>
+        </form>
+      </section>
+    </main>
     <app-footer></app-footer>
     <top-button></top-button>
   </body>
