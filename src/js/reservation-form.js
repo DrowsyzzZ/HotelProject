@@ -1,5 +1,6 @@
 import {
   createReservation,
+  getApiErrorMessage,
   getHolidays,
   getPrices,
   getReservations,
@@ -203,8 +204,10 @@ async function handleSubmit(event) {
     submitButton.textContent = '예약 완료';
     completionModal.showModal();
   } catch (error) {
-    console.error(error);
-    status.textContent = '예약을 등록하지 못했습니다. 잠시 후 다시 시도해 주세요.';
+    status.textContent = getApiErrorMessage(
+      error,
+      '예약을 등록하지 못했습니다. 잠시 후 다시 시도해 주세요.',
+    );
   } finally {
     if (!isCompleted) {
       isSubmitting = false;
@@ -249,10 +252,12 @@ async function initializeReservationForm() {
     renderDraft();
     updateSubmitState();
   } catch (error) {
-    console.error(error);
     draft = null;
     isDraftReady = false;
-    status.textContent = '예약 정보를 확인할 수 없습니다. 객실을 다시 선택해 주세요.';
+    status.textContent = getApiErrorMessage(
+      error,
+      '예약 정보를 확인할 수 없습니다. 객실을 다시 선택해 주세요.',
+    );
     submitButton.disabled = true;
   }
 }

@@ -1,9 +1,10 @@
-import { getHolidays, getPrices, getRoom, getSeasons } from './api.js';
+import { getApiErrorMessage, getHolidays, getPrices, getRoom, getSeasons } from './api.js';
 import { calculateReservationPrice } from './reservation-pricing.js';
 
 const detail = document.querySelector('#room-detail');
 const reservationFormPage = new URL('../html/reservation-form.html', import.meta.url);
 const roomSelectPage = new URL('../html/room-select.html', import.meta.url);
+const notFoundPage = new URL('../404.html', import.meta.url);
 const RESERVATION_DRAFT_KEY = 'hotelReservationDraft';
 const roomIdValue = new URLSearchParams(window.location.search).get('roomId');
 const roomId = Number(roomIdValue);
@@ -18,10 +19,26 @@ function renderError(message) {
   `;
 }
 
+function moveToNotFoundPage() {
+  window.location.replace(notFoundPage.href);
+}
+
 function createExtraGuestOptions(maxExtraGuests) {
   return Array.from({ length: maxExtraGuests + 1 }, (_, count) => `
     <option value="${count}">${count === 0 ? '없음' : `${count}명`}</option>
   `).join('');
+}
+
+function isValidRoom(room) {
+  return room
+    && Number.isInteger(Number(room.id))
+    && typeof room.name === 'string'
+    && typeof room.name_eng === 'string'
+    && Number.isFinite(Number(room.min))
+    && Number.isFinite(Number(room.capacity))
+    && Number(room.capacity) >= Number(room.min)
+    && Array.isArray(room.images)
+    && room.images.length > 0;
 }
 
 function renderRoom(room) {
@@ -111,7 +128,6 @@ async function initializePriceCalculation(room) {
       });
       totalPrice.textContent = priceResult.totalPrice.toLocaleString('ko-KR');
     } catch (error) {
-      console.error(error);
       priceResult = null;
       totalPrice.textContent = '계산 불가';
     }
@@ -157,28 +173,38 @@ async function initializePriceCalculation(room) {
     pricingData = { seasons, prices, holidays };
     updateTotal();
   } catch (error) {
-    console.error(error);
     totalPrice.textContent = '계산 불가';
+    totalPrice.setAttribute('aria-label', getApiErrorMessage(
+      error,
+      '합계 금액을 계산하지 못했습니다. 잠시 후 다시 시도해 주세요.',
+    ));
+    updateSubmitState();
   }
 }
 
 async function initializeRoomDetail() {
   if (!roomIdValue || !Number.isInteger(roomId) || roomId < 1) {
-    renderError('올바른 객실을 다시 선택해주세요.');
+    moveToNotFoundPage();
     return;
   }
 
   try {
     const room = await getRoom(roomId);
     if (!room) {
-      renderError(`객실 ID ${roomId}에 해당하는 데이터가 없습니다.`);
+      moveToNotFoundPage();
+      return;
+    }
+    if (!isValidRoom(room)) {
+      renderError('객실 정보가 올바르지 않습니다. 객실을 다시 선택해주세요.');
       return;
     }
 
     renderRoom(room);
   } catch (error) {
-    console.error(error);
-    renderError('객실 데이터를 불러오지 못했습니다. JSON Server를 확인해주세요.');
+    renderError(getApiErrorMessage(
+      error,
+      '객실 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.',
+    ));
   }
 }
 

@@ -61,7 +61,14 @@ class RoomGallery extends HTMLElement {
   }
 
   async initializeSlider() {
-    const { default: Swiper } = await import('https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.mjs');
+    let Swiper;
+
+    try {
+      ({ default: Swiper } = await import('https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.mjs'));
+    } catch {
+      this.querySelector('.room-gallery__slider')?.classList.add('is-unavailable');
+      return;
+    }
     if (!this.isConnected || !this._room) return;
 
     this.slider = new Swiper(this.querySelector('.room-gallery__slider'), {

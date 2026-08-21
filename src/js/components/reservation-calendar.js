@@ -1,4 +1,4 @@
-import { getHolidays, getReservations } from '../api.js';
+import { getApiErrorMessage, getHolidays, getReservations } from '../api.js';
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
@@ -88,8 +88,7 @@ class ReservationCalendar extends HTMLElement {
       this.bookedDates = this.createBookedDateSet(reservations);
       this.errorMessage = '';
     } catch (error) {
-      console.error(error);
-      this.errorMessage = '예약 정보를 불러오지 못했습니다.';
+      this.errorMessage = getApiErrorMessage(error, '예약 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
     } finally {
       this.isLoading = false;
       this.render();
@@ -124,7 +123,7 @@ class ReservationCalendar extends HTMLElement {
     const nextAppearanceClass = this.readOnly ? ' is-visually-active' : '';
 
     this.innerHTML = `
-      <div class="booking-calendar${this.isLoading ? ' is-loading' : ''}">
+      <div class="booking-calendar${this.isLoading ? ' is-loading' : ''}${this.errorMessage ? ' has-error' : ''}">
         <div class="booking-calendar__header">
           <div class="booking-calendar__navigation">
             <button class="booking-calendar__previous${previousAppearanceClass}" type="button" aria-label="이전 달"${previousDisabled ? ' disabled' : ''}>‹</button>

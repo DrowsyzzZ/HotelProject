@@ -259,6 +259,7 @@ reservation-calendar,
 }
 
 .booking-calendar {
+  position: relative;
   display: grid;
   min-height: 0;
   grid-template-rows: 70px 44px minmax(0, 1fr);
@@ -408,6 +409,27 @@ reservation-calendar,
   height: 1px;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+.booking-calendar.has-error .booking-calendar__weekdays,
+.booking-calendar.has-error .booking-calendar__days {
+  opacity: 0.25;
+}
+
+.booking-calendar.has-error .booking-calendar__message {
+  display: grid;
+  position: absolute;
+  inset: 114px 15px 0;
+  overflow: visible;
+  width: auto;
+  height: auto;
+  color: var(--color-error);
+  clip-path: none;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  place-items: center;
 }
 
 .booking-alert {

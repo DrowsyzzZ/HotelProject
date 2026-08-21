@@ -1,4 +1,4 @@
-import { getPrices, getRooms } from './api.js';
+import { getApiErrorMessage, getPrices, getRooms } from './api.js';
 
 const tableBody = document.querySelector('#price-table-body');
 const tableScroll = document.querySelector('.price-table-scroll');
@@ -74,15 +74,27 @@ async function initializePriceTable() {
       getPrices(),
     ]);
 
+    if (rooms.length === 0 || prices.length === 0) {
+      const message = rooms.length === 0
+        ? '현재 등록된 객실이 없습니다.'
+        : '현재 등록된 객실 요금이 없습니다.';
+      tableBody.innerHTML = `
+        <tr class="price-table__message">
+          <td colspan="9">${message}</td>
+        </tr>
+      `;
+      return;
+    }
+
     renderPriceRows(rooms, prices);
     requestAnimationFrame(() => {
       tableScroll.classList.toggle('is-scrollable', tableScroll.scrollWidth > tableScroll.clientWidth + 1);
     });
   } catch (error) {
-    console.error(error);
+    const message = getApiErrorMessage(error, '요금을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
     tableBody.innerHTML = `
       <tr class="price-table__message price-table__message--error">
-        <td colspan="9">요금을 불러오지 못했습니다. JSON Server 실행 여부를 확인해주세요.</td>
+        <td colspan="9">${message}</td>
       </tr>
     `;
   }
