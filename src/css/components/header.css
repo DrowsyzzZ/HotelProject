@@ -121,16 +121,17 @@ app-header {
 
   .site-header__nav {
     height: 35px;
+    padding-left: 15px;
     box-shadow: inset 0 1px var(--color-table-border);
   }
 
   .site-header__menu {
     position: relative;
-    justify-content: center;
+    justify-content: flex-start;
     width: fit-content;
     height: 100%;
-    margin-inline: auto;
-    padding: 7px;
+    margin: 0;
+    padding: 7px 0;
     gap: 4px;
   }
 
@@ -150,7 +151,7 @@ app-header {
   .site-header__submenu {
     position: absolute;
     top: 35px;
-    left: 3px;
+    left: 0;
     align-items: center;
     justify-content: flex-start;
     width: max-content;

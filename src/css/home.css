@@ -213,21 +213,6 @@
   object-fit: contain;
 }
 
-.room-modal__close {
-  position: absolute;
-  top: -42px;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 0;
-  color: var(--color-white);
-  font-size: 36px;
-  line-height: 1;
-  background: transparent;
-  cursor: pointer;
-}
-
 body:has(.room-modal[open]) {
   overflow: hidden;
 }
@@ -316,15 +301,6 @@ body:has(.room-modal[open]) {
     white-space: nowrap;
     line-height: 1;
     padding-bottom: 14px;
-  }
-
-  .room-modal__close {
-    top: -30px;
-    right: 0;
-    width: 24px;
-    height: 24px;
-    font-size: 28px;
-    background: transparent;
   }
 
   .best-hotel {

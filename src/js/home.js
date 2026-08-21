@@ -18,7 +18,6 @@ const heroSlider = new Swiper('.hero-slider', {
 
 const roomModal = document.querySelector('.room-modal');
 const roomModalImage = roomModal?.querySelector('.room-modal__image');
-const roomModalClose = roomModal?.querySelector('.room-modal__close');
 const roomButtons = document.querySelectorAll('.rooms-list__item');
 const horizontalScrollAreas = document.querySelectorAll('.horizontal-scroll');
 
@@ -93,8 +92,6 @@ roomButtons.forEach((button) => {
     roomModal.showModal();
   });
 });
-
-roomModalClose?.addEventListener('click', () => roomModal?.close());
 
 roomModal?.addEventListener('click', (event) => {
   if (event.target === roomModal) roomModal.close();

@@ -3,6 +3,7 @@ import { calculateReservationPrice } from './reservation-pricing.js';
 
 const detail = document.querySelector('#room-detail');
 const reservationFormPage = new URL('../html/reservation-form.html', import.meta.url);
+const roomSelectPage = new URL('../html/room-select.html', import.meta.url);
 const RESERVATION_DRAFT_KEY = 'hotelReservationDraft';
 const roomIdValue = new URLSearchParams(window.location.search).get('roomId');
 const roomId = Number(roomIdValue);
@@ -59,7 +60,7 @@ function renderRoom(room) {
 
         <div class="booking-panel__actions">
           <button class="booking-panel__cancel" type="button">취소</button>
-          <button class="booking-panel__submit" type="button">예약하기</button>
+          <button class="booking-panel__submit" type="button" disabled>예약하기</button>
         </div>
       </aside>
     </div>
@@ -68,7 +69,7 @@ function renderRoom(room) {
   detail.querySelector('room-gallery').room = room;
   detail.querySelector('reservation-calendar').roomId = room.id;
   detail.querySelector('.booking-panel__cancel').addEventListener('click', () => {
-    detail.querySelector('reservation-calendar').clearSelection();
+    window.location.href = roomSelectPage.href;
   });
 
   initializePriceCalculation(room);
@@ -84,10 +85,20 @@ async function initializePriceCalculation(room) {
   let priceResult = null;
   let pricingData;
 
+  function updateSubmitState() {
+    submitButton.disabled = !(
+      selectedRange.checkIn
+      && selectedRange.checkOut
+      && stayDates.length > 0
+      && priceResult
+    );
+  }
+
   function updateTotal() {
     if (!pricingData || stayDates.length === 0) {
       priceResult = null;
       totalPrice.textContent = '0';
+      updateSubmitState();
       return;
     }
 
@@ -104,6 +115,7 @@ async function initializePriceCalculation(room) {
       priceResult = null;
       totalPrice.textContent = '계산 불가';
     }
+    updateSubmitState();
   }
 
   calendar.addEventListener('date-range-change', event => {
@@ -112,11 +124,6 @@ async function initializePriceCalculation(room) {
     updateTotal();
   });
   extraGuestSelect.addEventListener('change', updateTotal);
-  detail.querySelector('.booking-panel__cancel').addEventListener('click', () => {
-    extraGuestSelect.value = '0';
-    stayDates = [];
-    updateTotal();
-  });
   submitButton.addEventListener('click', () => {
     if (!selectedRange.checkIn || !selectedRange.checkOut || !priceResult) {
       calendar.showWarning('입실일과 퇴실일을 선택해 주세요.');

@@ -114,18 +114,25 @@ class ReservationCalendar extends HTMLElement {
   render() {
     const year = this.visibleMonth.getFullYear();
     const month = this.visibleMonth.getMonth();
-    const previousDisabled = year === this.today.getFullYear() && month === this.today.getMonth();
+    const currentMonth = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
+    const displayedMonth = new Date(year, month, 1);
+    const canMoveToPreviousMonth = displayedMonth > currentMonth;
+    const previousDisabled = this.readOnly || !canMoveToPreviousMonth;
+    const previousAppearanceClass = this.readOnly && canMoveToPreviousMonth
+      ? ' is-visually-active'
+      : '';
+    const nextAppearanceClass = this.readOnly ? ' is-visually-active' : '';
 
     this.innerHTML = `
       <div class="booking-calendar${this.isLoading ? ' is-loading' : ''}">
         <div class="booking-calendar__header">
           <div class="booking-calendar__navigation">
-            <button class="booking-calendar__previous" type="button" aria-label="이전 달"${previousDisabled ? ' disabled' : ''}>‹</button>
+            <button class="booking-calendar__previous${previousAppearanceClass}" type="button" aria-label="이전 달"${previousDisabled ? ' disabled' : ''}>‹</button>
             <strong aria-live="polite">
               <span class="booking-calendar__date-value">${year}</span><span class="booking-calendar__date-unit">년</span>
               <span class="booking-calendar__date-value">${String(month + 1).padStart(2, '0')}</span><span class="booking-calendar__date-unit">월</span>
             </strong>
-            <button class="booking-calendar__next" type="button" aria-label="다음 달">›</button>
+            <button class="booking-calendar__next${nextAppearanceClass}" type="button" aria-label="다음 달"${this.readOnly ? ' disabled' : ''}>›</button>
           </div>
         </div>
         <div class="booking-calendar__weekdays" aria-hidden="true">
@@ -199,6 +206,11 @@ class ReservationCalendar extends HTMLElement {
   }
 
   selectDate(date) {
+    if (this.checkIn && toDateKey(date) === toDateKey(this.checkIn)) {
+      this.clearSelection();
+      return;
+    }
+
     if (!this.checkIn || this.checkOut || date <= this.checkIn) {
       this.checkIn = date;
       this.checkOut = null;

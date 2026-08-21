@@ -77,10 +77,17 @@
 
           <div class="reservation-form__actions">
             <button class="reservation-form__cancel" type="button">취소</button>
-            <button class="reservation-form__submit" type="submit">예약하기</button>
+            <button class="reservation-form__submit" type="submit" disabled>예약하기</button>
           </div>
         </form>
       </section>
+
+      <dialog class="booking-alert reservation-complete-modal" aria-labelledby="reservation-complete-message">
+        <p id="reservation-complete-message">예약이 완료되었습니다.</p>
+        <form method="dialog">
+          <button type="submit">확인</button>
+        </form>
+      </dialog>
     </main>
     <app-footer></app-footer>
     <top-button></top-button>

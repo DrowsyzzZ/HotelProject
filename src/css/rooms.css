@@ -298,6 +298,10 @@ reservation-calendar,
   cursor: default;
 }
 
+.booking-calendar__navigation button:disabled.is-visually-active {
+  color: var(--color-black);
+}
+
 .booking-calendar__navigation strong {
   line-height: 25px;
   font-size: 16px;
@@ -380,8 +384,7 @@ reservation-calendar,
 }
 
 .booking-calendar__day.is-muted > span,
-.booking-calendar__day.is-booked > span,
-.booking-calendar__day.is-holiday > span {
+.booking-calendar__day.is-booked > span {
   color: var(--color-gray-3);
 }
 
@@ -555,13 +558,19 @@ reservation-calendar,
 
 .booking-panel__submit {
   color: var(--color-white);
-  background: var(--color-text-hover);
+  background: var(--color-black);
   transition: background-color 200ms ease;
 }
 
-.booking-panel__submit:hover,
-.booking-panel__submit:focus-visible {
-  background-color: color-mix(in srgb, var(--color-text-hover) 70%, var(--color-white));
+.booking-panel__submit:not(:disabled):hover,
+.booking-panel__submit:not(:disabled):focus-visible {
+  background-color: color-mix(in srgb, var(--color-black) 70%, var(--color-white));
+}
+
+.booking-panel__submit:disabled {
+  color: var(--color-white);
+  background: var(--color-text-hover);
+  cursor: default;
 }
 
 .room-detail-error {
@@ -661,53 +670,9 @@ reservation-calendar,
   }
 
   .room-gallery__prev,
-  .room-gallery__next {
-    position: absolute;
-    top: 50%;
-    z-index: 2;
-    display: grid;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    color: var(--color-white);
-    background: rgb(0 0 0 / 35%);
-    font-size: 28px;
-    line-height: 1;
-    cursor: pointer;
-    place-items: center;
-    transform: translateY(-50%);
-  }
-
-  .room-gallery__prev {
-    left: 12px;
-  }
-
-  .room-gallery__next {
-    right: 12px;
-  }
-
+  .room-gallery__next,
   .room-gallery__pagination.swiper-pagination {
-    position: absolute;
-    bottom: 14px;
-    left: 0;
-    z-index: 2;
-    display: block;
-    width: 100%;
-  }
-
-  .room-gallery__pagination .swiper-pagination-bullet {
-    width: 7px;
-    height: 7px;
-    border: 1px solid var(--color-white);
-    margin-inline: 4px;
-    background: transparent;
-    opacity: 1;
-  }
-
-  .room-gallery__pagination .swiper-pagination-bullet-active {
-    background: var(--color-white);
+    display: none;
   }
 
   .room-gallery__thumbnails {

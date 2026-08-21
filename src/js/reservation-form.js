@@ -16,8 +16,12 @@ const cancelButton = form.querySelector('.reservation-form__cancel');
 const nameInput = form.querySelector('#customer-name');
 const phoneInput = form.querySelector('#phone-number');
 const calendar = form.querySelector('reservation-calendar');
+const completionModal = document.querySelector('.reservation-complete-modal');
+const mainPage = new URL('../index.html', import.meta.url);
 let draft;
 let isSubmitting = false;
+let isCompleted = false;
+let isDraftReady = false;
 
 function parseDate(dateKey) {
   const [year, month, day] = dateKey.split('-').map(Number);
@@ -68,6 +72,30 @@ function setFieldError(input, message) {
   input.classList.toggle('is-invalid', Boolean(message));
   input.setAttribute('aria-invalid', String(Boolean(message)));
   output.textContent = message;
+}
+
+function isNameValueValid(value) {
+  return /^[가-힣a-zA-Z]+(?: [가-힣a-zA-Z]+)*$/.test(value.trim())
+    && value.trim().length >= 2
+    && value.trim().length <= 20;
+}
+
+function isPhoneValueValid(value) {
+  const phoneNumber = value.trim();
+  if (!/^01[016789]\d+$/.test(phoneNumber)) return false;
+
+  return phoneNumber.startsWith('010')
+    ? phoneNumber.length === 11
+    : /^01[16789]\d{7,8}$/.test(phoneNumber);
+}
+
+function updateSubmitState() {
+  submitButton.disabled = isSubmitting
+    || isCompleted
+    || !isDraftReady
+    || !draft
+    || !isNameValueValid(nameInput.value)
+    || !isPhoneValueValid(phoneInput.value);
 }
 
 function validateName() {
@@ -140,7 +168,7 @@ function renderDraft() {
 
 async function handleSubmit(event) {
   event.preventDefault();
-  if (isSubmitting || !draft) return;
+  if (isSubmitting || isCompleted || !isDraftReady || !draft) return;
 
   const customer = validateForm();
   if (!customer) return;
@@ -168,19 +196,20 @@ async function handleSubmit(event) {
     });
 
     sessionStorage.removeItem(RESERVATION_DRAFT_KEY);
-    status.classList.add('is-success');
-    status.textContent = '예약이 완료되었습니다.';
+    isCompleted = true;
+    status.textContent = '';
     nameInput.disabled = true;
     phoneInput.disabled = true;
     submitButton.textContent = '예약 완료';
+    completionModal.showModal();
   } catch (error) {
     console.error(error);
     status.textContent = '예약을 등록하지 못했습니다. 잠시 후 다시 시도해 주세요.';
   } finally {
-    if (!status.classList.contains('is-success')) {
+    if (!isCompleted) {
       isSubmitting = false;
-      submitButton.disabled = false;
       submitButton.textContent = '예약하기';
+      updateSubmitState();
     }
   }
 }
@@ -216,19 +245,40 @@ async function initializeReservationForm() {
     draft.roomNameEng = room.name_eng;
     draft.totalGuests = room.min + Number(draft.extraGuests);
     draft.totalPrice = priceResult.totalPrice;
+    isDraftReady = true;
     renderDraft();
+    updateSubmitState();
   } catch (error) {
     console.error(error);
     draft = null;
+    isDraftReady = false;
     status.textContent = '예약 정보를 확인할 수 없습니다. 객실을 다시 선택해 주세요.';
     submitButton.disabled = true;
   }
 }
 
-nameInput.addEventListener('input', () => setFieldError(nameInput, ''));
-phoneInput.addEventListener('input', () => setFieldError(phoneInput, ''));
-nameInput.addEventListener('blur', validateName);
-phoneInput.addEventListener('blur', validatePhone);
+nameInput.addEventListener('input', () => {
+  setFieldError(nameInput, '');
+  updateSubmitState();
+});
+phoneInput.addEventListener('input', () => {
+  setFieldError(phoneInput, '');
+  updateSubmitState();
+});
+nameInput.addEventListener('blur', () => {
+  validateName();
+  updateSubmitState();
+});
+phoneInput.addEventListener('blur', () => {
+  validatePhone();
+  updateSubmitState();
+});
+completionModal.addEventListener('click', event => {
+  if (event.target === completionModal) completionModal.close();
+});
+completionModal.addEventListener('close', () => {
+  window.location.href = mainPage.href;
+});
 cancelButton.addEventListener('click', () => {
   sessionStorage.removeItem(RESERVATION_DRAFT_KEY);
   window.location.href = draft
