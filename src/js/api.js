@@ -21,3 +21,8 @@ export const getRoom = async roomId => {
 };
 export const getSeasons = () => fetchCollection('season');
 export const getPrices = () => fetchCollection('price');
+export const getHolidays = () => fetchCollection('holiday');
+export const getReservations = async roomId => {
+  const reservations = await fetchCollection('reservation');
+  return reservations.filter(reservation => Number(reservation.room_id) === Number(roomId));
+};

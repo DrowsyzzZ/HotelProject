@@ -1,6 +1,13 @@
 room-card,
-room-gallery {
+room-gallery,
+reservation-calendar {
   display: block;
+}
+
+reservation-calendar,
+.booking-calendar {
+  min-height: 0;
+  height: 100%;
 }
 
 .reservation-hero--live {
@@ -282,12 +289,13 @@ room-gallery {
   background: none;
   font-size: 34px;
   line-height: 1;
-  cursor: default;
+  cursor: pointer;
   place-items: center;
 }
 
-.booking-calendar__navigation button:first-child {
+.booking-calendar__navigation button:disabled {
   color: var(--color-gray-3);
+  cursor: default;
 }
 
 .booking-calendar__navigation strong {
@@ -344,7 +352,17 @@ room-gallery {
   align-items: center;
   justify-content: center;
   gap: 2px;
+  padding: 0;
+  border: 0;
+  color: var(--color-black);
+  background: transparent;
+  font: inherit;
   text-align: center;
+  cursor: pointer;
+}
+
+.booking-calendar__day:disabled {
+  cursor: default;
 }
 
 .booking-calendar__day > span {
@@ -372,8 +390,72 @@ room-gallery {
   background: var(--color-selected);
 }
 
+.booking-calendar__day.is-selected > span {
+  color: inherit;
+}
+
 .booking-calendar__day.is-selected small {
   color: inherit;
+}
+
+.booking-calendar__message {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.booking-alert {
+  width: 420px;
+  padding: 50px 30px 30px;
+  border: 0;
+  border-radius: 2px;
+  color: var(--color-black);
+  background: var(--color-white);
+  text-align: center;
+}
+
+.booking-alert[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
+}
+
+.booking-alert::backdrop {
+  background: rgb(0 0 0 / 50%);
+}
+
+.booking-alert p {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.booking-alert form {
+  margin: 0;
+}
+
+.booking-alert button {
+  width: 74px;
+  height: 44px;
+  padding: 15px 25px;
+  border: 0;
+  border-radius: 2px;
+  color: var(--color-white);
+  background: var(--color-footer-bg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+  cursor: pointer;
 }
 
 .booking-panel__people {
@@ -502,6 +584,31 @@ room-gallery {
 }
 
 @media (max-width: 1000px) {
+  .booking-alert {
+    width: 320px;
+    padding: 20px;
+  }
+
+  .booking-alert[open] {
+    gap: 15px;
+  }
+
+  .booking-alert p {
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .booking-alert button {
+    width: 64px;
+    height: 34px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
   .room-select,
   .room-detail {
     padding-block: 20px;

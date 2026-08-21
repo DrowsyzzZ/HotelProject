@@ -3,6 +3,7 @@ import './app-footer.js';
 import './top-button.js';
 import './room-card.js';
 import './room-gallery.js';
+import './reservation-calendar.js';
 
 if (!document.querySelector('script[data-font-awesome-kit]')) {
   const fontAwesome = document.createElement('script');

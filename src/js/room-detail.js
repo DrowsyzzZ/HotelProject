@@ -15,25 +15,6 @@ function renderError(message) {
 }
 
 function renderRoom(room) {
-  const calendarDays = [
-    ['27', 'is-muted is-sunday'], ['28', 'is-muted'], ['29', 'is-muted'], ['30', 'is-muted'],
-    ['1', 'is-muted'], ['2', 'is-muted'], ['3', 'is-muted'], ['4', 'is-muted is-sunday'],
-    ['5', 'is-muted'], ['6', 'is-muted'], ['7', 'is-muted'], ['8', 'is-muted'],
-    ['9', 'is-muted'], ['10', 'is-muted'], ['11', 'is-muted is-sunday'],
-    ['12', 'is-muted'], ['13', 'is-muted'], ['14', ''], ['15', 'is-selected is-check-in', '입실'],
-    ['16', 'is-selected'], ['17', 'is-selected is-check-out', '퇴실'], ['18', 'is-sunday'],
-    ['19', ''], ['20', 'is-booked', '예약완료'], ['21', 'is-booked', '예약완료'],
-    ['22', ''], ['23', ''], ['24', ''], ['25', 'is-sunday'], ['26', ''], ['27', ''],
-    ['28', ''], ['29', 'is-booked', '예약완료'], ['30', 'is-booked', '예약완료'],
-    ['31', 'is-booked', '예약완료'], ['1', 'is-sunday'], ['2', ''],
-    ['3', ''], ['4', ''], ['5', ''], ['6', ''], ['7', '']
-  ];
-  const calendarCells = calendarDays.map(([day, className, status = '']) => `
-    <div class="booking-calendar__day ${className}">
-      <span>${day}</span>${status ? `<small>${status}</small>` : ''}
-    </div>
-  `).join('');
-
   document.title = `${room.name} 객실 | Hotel`;
   detail.innerHTML = `
     <h2 class="room-detail__title">${room.name_eng.toUpperCase()}</h2>
@@ -47,23 +28,7 @@ function renderRoom(room) {
       </div>
 
       <aside class="booking-panel" aria-label="예약 정보">
-        <div class="booking-calendar">
-          <div class="booking-calendar__header">
-            <div class="booking-calendar__navigation">
-              <button type="button" aria-label="이전 달" aria-disabled="true">‹</button>
-              <strong>
-                <span class="booking-calendar__date-value">2025</span><span class="booking-calendar__date-unit">년</span>
-                <span class="booking-calendar__date-value">05</span><span class="booking-calendar__date-unit">월</span>
-              </strong>
-              <button type="button" aria-label="다음 달" aria-disabled="true">›</button>
-            </div>
-          </div>
-          <div class="booking-calendar__weekdays" aria-hidden="true">
-            <span>일</span><span>월</span><span>화</span><span>수</span>
-            <span>목</span><span>금</span><span>토</span>
-          </div>
-          <div class="booking-calendar__days">${calendarCells}</div>
-        </div>
+        <reservation-calendar></reservation-calendar>
 
         <div class="booking-panel__people">
           <label for="extra-people">추가 인원</label>
@@ -88,6 +53,10 @@ function renderRoom(room) {
   `;
 
   detail.querySelector('room-gallery').room = room;
+  detail.querySelector('reservation-calendar').roomId = room.id;
+  detail.querySelector('.booking-panel__cancel').addEventListener('click', () => {
+    detail.querySelector('reservation-calendar').clearSelection();
+  });
 }
 
 async function initializeRoomDetail() {
