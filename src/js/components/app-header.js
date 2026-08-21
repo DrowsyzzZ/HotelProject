@@ -8,9 +8,10 @@ const NAV_ITEMS = [
     { label: '오시는길', href: 'index.html#location' },
   ] },
   { key: 'rooms', label: 'ROOMS', children: [
-    { label: 'ROOM 1', href: 'html/room-detail.html?room=1' },
-    { label: 'ROOM 2', href: 'html/room-detail.html?room=2' },
-    { label: 'ROOM 3', href: 'html/room-detail.html?room=3' },
+    { label: 'ROOM 1', href: 'html/room-detail.html?roomId=1' },
+    { label: 'ROOM 2', href: 'html/room-detail.html?roomId=2' },
+    { label: 'ROOM 3', href: 'html/room-detail.html?roomId=3' },
+    { label: 'ROOM 4', href: 'html/room-detail.html?roomId=4' },
   ] },
   { key: 'reservation', label: 'RESERVATION', children: [
     { label: '예약 안내', href: 'html/reservation-guide.html', enabled: true },
