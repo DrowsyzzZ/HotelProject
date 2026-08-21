@@ -1,4 +1,5 @@
-import { getRoom } from './api.js';
+import { getHolidays, getPrices, getRoom, getSeasons } from './api.js';
+import { calculateReservationPrice } from './reservation-pricing.js';
 
 const detail = document.querySelector('#room-detail');
 const roomIdValue = new URLSearchParams(window.location.search).get('roomId');
@@ -14,7 +15,18 @@ function renderError(message) {
   `;
 }
 
+function createExtraGuestOptions(maxExtraGuests) {
+  return Array.from({ length: maxExtraGuests + 1 }, (_, count) => `
+    <option value="${count}">${count === 0 ? '없음' : `${count}명`}</option>
+  `).join('');
+}
+
 function renderRoom(room) {
+  const maxExtraGuests = room.capacity - room.min;
+  const extraGuestDescription = maxExtraGuests === 0
+    ? `기준 인원 ${room.min}명, 추가 인원 없음`
+    : `기준 인원 ${room.min}명, 아동 최대 ${maxExtraGuests}명 추가 가능 (1명당 객실 가격의 20%)`;
+
   document.title = `${room.name} 객실 | Hotel`;
   detail.innerHTML = `
     <h2 class="room-detail__title">${room.name_eng.toUpperCase()}</h2>
@@ -32,16 +44,15 @@ function renderRoom(room) {
 
         <div class="booking-panel__people">
           <label for="extra-people">추가 인원</label>
-          <select id="extra-people" aria-label="추가 인원">
-            <option>없음</option>
-            <option>1명</option>
+          <select id="extra-people" aria-label="추가 아동 인원"${maxExtraGuests === 0 ? ' disabled' : ''}>
+            ${createExtraGuestOptions(maxExtraGuests)}
           </select>
-          <p>기준 인원 ${room.min}명, 추가 시 한 명당 객실 가격의 20%</p>
+          <p>${extraGuestDescription}</p>
         </div>
 
         <div class="booking-panel__total">
           <span>총 합계</span>
-          <strong>150,000 <small>원</small></strong>
+          <strong><span class="booking-panel__total-price">0</span><small>원</small></strong>
         </div>
 
         <div class="booking-panel__actions">
@@ -57,6 +68,60 @@ function renderRoom(room) {
   detail.querySelector('.booking-panel__cancel').addEventListener('click', () => {
     detail.querySelector('reservation-calendar').clearSelection();
   });
+
+  initializePriceCalculation(room);
+}
+
+async function initializePriceCalculation(room) {
+  const calendar = detail.querySelector('reservation-calendar');
+  const extraGuestSelect = detail.querySelector('#extra-people');
+  const totalPrice = detail.querySelector('.booking-panel__total-price');
+  let stayDates = [];
+  let pricingData;
+
+  function updateTotal() {
+    if (!pricingData || stayDates.length === 0) {
+      totalPrice.textContent = '0';
+      return;
+    }
+
+    try {
+      const result = calculateReservationPrice({
+        roomId: room.id,
+        stayDates,
+        extraGuests: Number(extraGuestSelect.value),
+        ...pricingData,
+      });
+      totalPrice.textContent = result.totalPrice.toLocaleString('ko-KR');
+    } catch (error) {
+      console.error(error);
+      totalPrice.textContent = '계산 불가';
+    }
+  }
+
+  calendar.addEventListener('date-range-change', event => {
+    stayDates = event.detail.stayDates;
+    updateTotal();
+  });
+  extraGuestSelect.addEventListener('change', updateTotal);
+  detail.querySelector('.booking-panel__cancel').addEventListener('click', () => {
+    extraGuestSelect.value = '0';
+    stayDates = [];
+    updateTotal();
+  });
+
+  try {
+    const [seasons, prices, holidays] = await Promise.all([
+      getSeasons(),
+      getPrices(),
+      getHolidays(),
+    ]);
+    pricingData = { seasons, prices, holidays };
+    updateTotal();
+  } catch (error) {
+    console.error(error);
+    totalPrice.textContent = '계산 불가';
+  }
 }
 
 async function initializeRoomDetail() {

@@ -495,6 +495,11 @@ reservation-calendar,
   font-weight: 300;
 }
 
+.booking-panel__people select:disabled {
+  color: var(--color-gray-3);
+  cursor: default;
+}
+
 .booking-panel__people p {
   color: var(--color-text-hover);
   font-size: 13px;
@@ -509,7 +514,7 @@ reservation-calendar,
   padding-inline: 25px;
 }
 
-.booking-panel__total span {
+.booking-panel__total > span {
   font-size: 14px;
 }
 

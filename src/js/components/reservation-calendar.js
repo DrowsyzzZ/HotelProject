@@ -190,12 +190,12 @@ class ReservationCalendar extends HTMLElement {
 
     const nights = Math.round((date - this.checkIn) / DAY_IN_MS);
     if (nights >= 6) {
-      this.showWarning('6일 이상 예약하실 수 없습니다.');
+      this.rejectSelection('6일 이상 예약하실 수 없습니다.');
       return;
     }
 
     if (this.rangeContainsBookedDate(this.checkIn, date)) {
-      this.showWarning('예약 완료된 날짜가 포함되어 예약하실 수 없습니다.');
+      this.rejectSelection('예약 완료된 날짜가 포함되어 예약하실 수 없습니다.');
       return;
     }
 
@@ -236,6 +236,14 @@ class ReservationCalendar extends HTMLElement {
     } else {
       dialog.setAttribute('open', '');
     }
+  }
+
+  rejectSelection(message) {
+    this.checkIn = null;
+    this.checkOut = null;
+    this.render();
+    this.emitDateRangeChange();
+    this.showWarning(message);
   }
 
   clearSelection() {
