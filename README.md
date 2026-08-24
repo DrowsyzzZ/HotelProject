@@ -23,9 +23,11 @@ HTML, CSS, JavaScript와 Supabase를 사용해 제작한 반응형 호텔 예약
 - Swiper
 - Supabase (PostgreSQL, Data API, RLS, RPC)
 
-## 실행
+## 실행 및 배포
 
-`src` 폴더를 VS Code Live Server 등의 정적 서버로 실행합니다. 별도의 JSON Server는 필요하지 않습니다.
+배포된 웹사이트는 위 GitHub Pages 링크에서 바로 확인할 수 있습니다.
+
+로컬에서 개발하거나 수정 사항을 확인하려면 `src` 폴더를 VS Code Live Server 등의 정적 서버로 실행합니다. 별도의 JSON Server는 필요하지 않습니다.
 
 Supabase 프로젝트를 새로 구성할 때는 SQL Editor에서 다음 파일을 순서대로 실행합니다.
 
