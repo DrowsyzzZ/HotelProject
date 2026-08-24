@@ -1,6 +1,8 @@
 # HotelProject
 
-HTML, CSS, JavaScript와 JSON Server를 사용해 제작하는 반응형 호텔 예약 웹사이트입니다.
+HTML, CSS, JavaScript와 Supabase를 사용해 제작한 반응형 호텔 예약 웹사이트입니다.
+
+배포: [HotelProject](https://drowsyzzz.github.io/HotelProject/)
 
 ## 주요 기능
 
@@ -19,30 +21,33 @@ HTML, CSS, JavaScript와 JSON Server를 사용해 제작하는 반응형 호텔 
 - CSS3
 - Vanilla JavaScript
 - Swiper
-- JSON Server 0.17.4
+- Supabase (PostgreSQL, Data API, RLS, RPC)
 
 ## 실행
 
-```powershell
-yarn install
-yarn start
-```
+`src` 폴더를 VS Code Live Server 등의 정적 서버로 실행합니다. 별도의 JSON Server는 필요하지 않습니다.
 
-`yarn start`는 `db.json`을 사용하는 JSON Server를 실행합니다. 프론트엔드 HTML은 별도의 로컬 정적 서버로 실행합니다.
+Supabase 프로젝트를 새로 구성할 때는 SQL Editor에서 다음 파일을 순서대로 실행합니다.
 
-## API
+1. [`supabase/schema.sql`](supabase/schema.sql): 테이블과 관계 생성
+2. [`supabase/seed.sql`](supabase/seed.sql): 개발용 초기 데이터 입력
+3. [`supabase/policies.sql`](supabase/policies.sql): 공개 조회 범위와 개인정보 보호 정책
+4. [`supabase/reservation-rpc.sql`](supabase/reservation-rpc.sql): 예약 검증·요금 계산·중복 방지 함수
 
-- `GET /rooms`
-- `GET /rooms/:id`
-- `GET /season`
-- `GET /holiday`
-- `GET /price`
-- `GET /reservation`
-- `POST /reservation`
+`seed.sql`은 기존 테이블 데이터를 초기화하므로 개발 초기 설정에만 사용합니다.
+
+## 데이터 접근
+
+- 객실·시즌·공휴일·가격: Supabase Data API 읽기
+- 예약 가능 날짜: 개인정보를 제외한 예약 기간만 읽기
+- 예약 등록: `create_reservation` RPC
+- 예약자 이름·전화번호: 공개 키로 조회 불가
+
+예약 등록 RPC는 객실 정원, 최대 5박, 날짜 중복, 시즌, 주말·공휴일 요금과 추가 인원 요금을 서버에서 다시 검증합니다.
 
 ## 작업 방식
 
-- 3일 일정, 이슈 12개로 관리합니다.
+- 3일 일정으로 개발하고 기능 단위 GitHub 이슈로 관리합니다.
 - 큰 작업 단위별로 `feat/base-home`, `feat/reservation`, `feat/responsive-qa` 브랜치를 사용합니다.
 - 이슈 하나를 완료할 때마다 관련 커밋을 남깁니다.
 - 자세한 순서는 [`docs/ISSUE_PLAN.md`](docs/ISSUE_PLAN.md)를 참고합니다.
