@@ -1,12 +1,6 @@
 {
   "name": "HotelProject",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "json-server": "0.17.4"
-  },
-  "scripts": {
-    "start": "json-server --watch db.json"
-  }
+  "private": true,
+  "license": "MIT"
 }

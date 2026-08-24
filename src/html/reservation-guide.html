@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>예약 안내 | Hotel</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/reservation.css" />
+    <script type="module" src="../js/components/index.js"></script>
+    <script type="module" src="../js/reservation-guide.js"></script>
+  </head>
+  <body>
+    <app-header></app-header>
+    <main class="reservation-guide">
+      <section class="reservation-hero" aria-labelledby="reservation-hero-title">
+        <div class="reservation-hero__content">
+          <h1 id="reservation-hero-title">RESERVATION</h1>
+          <p>예약안내</p>
+        </div>
+      </section>
+
+      <section class="reservation-info inner" aria-labelledby="reservation-title">
+        <h2 class="reservation-info__title" id="reservation-title">예약안내</h2>
+
+        <div class="price-table-scroll" tabindex="0" aria-label="객실 가격표, 좌우로 스크롤할 수 있습니다">
+          <table class="price-table">
+            <caption>
+              객실별 비수기 및 성수기 요금
+            </caption>
+            <colgroup>
+              <col span="2" />
+              <col class="price-table__capacity-column" />
+              <col span="6" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th rowspan="2" scope="col">객실</th>
+                <th rowspan="2" scope="col">면적</th>
+                <th rowspan="2" scope="col">인원<br />(기준/최대)</th>
+                <th colspan="3" scope="colgroup">
+                  비수기<br /><span class="price-table__season-range">(10.01-06.30)</span>
+                </th>
+                <th colspan="3" scope="colgroup">
+                  성수기<br /><span class="price-table__season-range">(07.01-09.30)</span>
+                </th>
+              </tr>
+              <tr>
+                <th scope="col">주중</th>
+                <th scope="col">주말</th>
+                <th scope="col">휴일</th>
+                <th scope="col">주중</th>
+                <th scope="col">주말</th>
+                <th scope="col">휴일</th>
+              </tr>
+            </thead>
+            <tbody id="price-table-body">
+              <tr class="price-table__message">
+                <td colspan="9">객실 요금을 불러오는 중입니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="stay-rules">
+          <article class="stay-rule stay-rule--light">
+            <h3>숙박 조건</h3>
+            <ul>
+              <li>디럭스 : 성인 2명 + 아동 1명 (만 12세 이하)</li>
+              <li>프리미엄 : 성인 2명 + 아동 2명 (만 12세 이하)</li>
+              <li>스위트 : 성인 4명 + 아동 2명 (만 12세 이하)</li>
+            </ul>
+          </article>
+          <article class="stay-rule stay-rule--medium">
+            <h3>식사 제공</h3>
+            <ul>
+              <li>디럭스 &amp; 프리미엄 (성인 2명 제공), 스위트 (성인 4명 제공)</li>
+              <li>12세 미만 아동 2명 차일드 메뉴 무료 제공</li>
+              <li>3박 예약 시 : 조식 3회, 중·석식 4회</li>
+              <li>4박 예약 시 : 조식 4회, 중·석식 6회</li>
+            </ul>
+          </article>
+          <article class="stay-rule stay-rule--dark">
+            <h3>세부 사항</h3>
+            <ul>
+              <li>키즈 카페 쿠폰 제공 (아동 2명까지 가능, 2시간 제한)</li>
+              <li>키즈 클럽 무료 이용 (아동 2명까지 가능, 숙박 기간동안 무제한 이용)</li>
+              <li>라운지 쿠폰 제공 (맥주 or 쉐이크 or 망고빙수 중 택1)</li>
+            </ul>
+          </article>
+        </div>
+
+        <article class="cancellation-policy">
+          <h3>취소 및 환불 규정</h3>
+          <div class="cancellation-policy__content">
+            <p>숙박 예정일 1일 전 18시까지는 위약금 없이 예약 취소 및 변경이 가능합니다.</p>
+            <p>숙박 예정일 1일 전 18시 이후 취소/변경 및 노쇼(No-show) 발생 시,</p>
+            <p>- 성수기 : 최초 1일 숙박 요금의 80%가 위약금으로 부과됩니다.</p>
+            <p>- 비수기(성수기 외 기간) : 최초 1일 숙박 요금의 10%가 위약금으로 부과됩니다.</p>
+            <p>일부 패키지의 경우 별도의 취소규정이 적용됩니다.</p>
+          </div>
+        </article>
+      </section>
+    </main>
+    <app-footer></app-footer>
+    <top-button></top-button>
+  </body>
+</html>

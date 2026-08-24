@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>객실 상세 | Hotel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/reservation.css" />
+    <link rel="stylesheet" href="../css/rooms.css" />
+    <script type="module" src="../js/components/index.js"></script>
+    <script type="module" src="../js/room-detail.js"></script>
+  </head>
+  <body>
+    <app-header></app-header>
+    <main class="room-detail-page">
+      <section class="reservation-hero reservation-hero--live" aria-labelledby="room-detail-hero-title">
+        <div class="reservation-hero__content">
+          <h1 id="room-detail-hero-title">RESERVATION</h1>
+          <p>실시간예약</p>
+        </div>
+      </section>
+
+      <section class="room-detail inner" id="room-detail" aria-live="polite">
+        <p class="room-page-message">객실 정보를 불러오는 중입니다.</p>
+      </section>
+    </main>
+    <app-footer></app-footer>
+    <top-button></top-button>
+  </body>
+</html>

@@ -18,12 +18,15 @@
 
 - CSS Reset과 디자인 변수
 - 공통 콘텐츠 컨테이너
-- 헤더, 내비게이션, 푸터, TOP 버튼
+- `<app-header>` Custom Element와 내비게이션
+- `<app-footer>` Custom Element
+- `<top-button>` Custom Element와 스크롤 이벤트
 
 완료 조건:
 
 - 모든 페이지에서 공통 레이아웃을 재사용할 수 있다.
 - PC와 모바일에서 가로 스크롤이 발생하지 않는다.
+- 세 공통 요소가 각자의 Custom Element 파일로 분리되어 있다.
 
 ### #3 메인 페이지 UI 구현
 
@@ -61,24 +64,28 @@
 
 ### #6 객실 선택 및 상세 구현
 
-- 객실 4종 동적 렌더링
+- `<room-card>` Custom Element를 이용한 객실 4종 동적 렌더링
 - `roomId` URL 파라미터 전달
-- 객실 설명과 이미지 갤러리
+- 객실 설명과 `<room-gallery>` Custom Element
 
 완료 조건:
 
 - 선택한 객실의 데이터가 상세 화면에 표시된다.
+- 객실 데이터 객체를 Custom Element의 프로퍼티로 전달한다.
 
 ### #7 예약 달력 구현
 
+- `<reservation-calendar>` Custom Element 구현
 - 월 이동과 날짜 렌더링
 - 과거·예약 완료 날짜 비활성화
 - 체크인·체크아웃 범위 선택
 - 기존 예약과 중복되는 범위 차단
+- `date-range-change` Custom Event로 선택 결과 전달
 
 완료 조건:
 
 - 유효한 숙박 범위만 선택할 수 있다.
+- 달력의 상태와 이벤트 처리가 페이지 스크립트에서 분리되어 있다.
 
 ### #8 인원 및 가격 계산 구현
 
@@ -148,3 +155,18 @@
 
 이슈 하나가 끝날 때마다 커밋하고, 큰 브랜치가 끝나면 `main`에 병합합니다.
 
+## Custom Element 적용 범위
+
+```text
+필수
+├─ app-header
+├─ app-footer
+└─ top-button
+
+추가
+├─ room-card
+├─ room-gallery
+└─ reservation-calendar
+```
+
+일반 버튼, 입력 필드, 메뉴 항목, 제목, 가격표 행과 셀은 Custom Element로 만들지 않습니다. 네이티브 HTML의 접근성과 기본 동작을 유지하고 CSS 클래스 또는 JavaScript 렌더 함수로 재사용합니다. Custom Element에는 Shadow DOM을 적용하지 않습니다.

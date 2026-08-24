@@ -1,0 +1,132 @@
+app-footer {
+  display: block;
+}
+
+.site-footer {
+  padding: 36px 20px 38px;
+  height: 350px;
+  color: var(--color-white);
+  text-align: center;
+  background: var(--color-footer-bg);
+}
+
+.site-footer__logo {
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.site-footer__socials {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 34px;
+}
+
+.site-footer__social-link {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  font-size: 24px;
+  place-items: center;
+  transition: color 200ms ease;
+}
+
+.site-footer__social-link:hover,
+.site-footer__social-link:focus-visible {
+  color: var(--color-text-hover);
+}
+
+.site-footer__info {
+  margin-top: 17px;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.site-footer__info-address {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.site-footer__links {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 13px 0;
+  font-size: 13px;
+}
+
+.site-footer__links a {
+  transition: color 200ms ease;
+  padding: 2px;
+  height: 20px;
+}
+
+.site-footer__links a:hover,
+.site-footer__links a:focus-visible {
+  color: var(--color-text-hover);
+}
+
+.site-footer__copyright {
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+@media (width <= 1000px) {
+  .site-footer {
+    padding: 39px 30px;
+  }
+
+  .site-footer__logo {
+    font-size: 30px;
+  }
+
+  .site-footer__socials {
+    gap: 8px;
+    margin: 20px 0;
+  }
+
+  .site-footer__social-link {
+    width: 20px;
+    height: 20px;
+    font-size: 18px;
+  }
+
+  .site-footer__info {
+    margin: 0;
+    gap: 10px;
+  }
+
+  .site-footer__info-address {
+    flex-direction: column;
+    gap: 6px;
+    padding: 4.5px 0;
+  }
+
+  .site-footer__links {
+    gap: 8.5px;
+  }
+
+  .site-footer__links a {
+    padding: 3.5px 2px;
+  }
+
+  .site-footer__copyright {
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .site-footer__info,
+  .site-footer__links,
+  .site-footer__copyright {
+    font-size: 13px;
+  }
+}

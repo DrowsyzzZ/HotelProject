@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>객실 선택 | Hotel</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/reservation.css" />
+    <link rel="stylesheet" href="../css/rooms.css" />
+    <script type="module" src="../js/components/index.js"></script>
+    <script type="module" src="../js/room-select.js"></script>
+  </head>
+  <body>
+    <app-header></app-header>
+    <main class="room-select-page">
+      <section class="reservation-hero reservation-hero--live" aria-labelledby="room-select-hero-title">
+        <div class="reservation-hero__content">
+          <h1 id="room-select-hero-title">RESERVATION</h1>
+          <p>실시간예약</p>
+        </div>
+      </section>
+
+      <section class="room-select inner" aria-labelledby="room-select-title">
+        <h2 id="room-select-title">객실 선택</h2>
+        <div class="room-select__list" id="room-select-list" aria-live="polite">
+          <p class="room-page-message">객실 정보를 불러오는 중입니다.</p>
+        </div>
+
+        <article class="cancellation-policy room-select__policy">
+          <h3>취소 및 환불 규정</h3>
+          <div class="cancellation-policy__content">
+            <p>숙박 예정일 1일 전 18시까지는 위약금 없이 예약 취소 및 변경이 가능합니다.</p>
+            <p>숙박 예정일 1일 전 18시 이후 취소/변경 및 노쇼(No-show) 발생 시,</p>
+            <p>- 성수기 : 최초 1일 숙박 요금의 80%가 위약금으로 부과됩니다.</p>
+            <p>- 비수기(성수기 외 기간) : 최초 1일 숙박 요금의 10%가 위약금으로 부과됩니다.</p>
+            <p>일부 패키지의 경우 별도의 취소규정이 적용됩니다.</p>
+          </div>
+        </article>
+      </section>
+    </main>
+    <app-footer></app-footer>
+    <top-button></top-button>
+  </body>
+</html>

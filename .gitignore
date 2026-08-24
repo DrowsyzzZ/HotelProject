@@ -10,6 +10,9 @@ build/
 .env.*
 !.env.example
 
+# Legacy local JSON Server data (Supabase migration source)
+db.json
+
 # Logs
 *.log
 yarn-error.log
