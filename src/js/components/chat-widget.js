@@ -1,5 +1,6 @@
 const BOT_NAME = 'AI 상담사';
 const OFF_HOURS_MESSAGE = '네 고객님 지금은 업무시간이 아니니 업무시간에 문의하십시오.';
+const CHAT_STORAGE_KEY = 'hotel-chat-conversation';
 
 class ChatWidget extends HTMLElement {
   connectedCallback() {
@@ -8,8 +9,8 @@ class ChatWidget extends HTMLElement {
         <div class="chat-widget__panel" role="dialog" aria-modal="false" aria-labelledby="chat-widget-title" hidden>
           <header class="chat-widget__header">
             <div>
-              <strong id="chat-widget-title">호텔 상담</strong>
-              <span>AI 상담사</span>
+              <strong id="chat-widget-title">CONCIERGE</strong>
+              <span>AI 상담 안내</span>
             </div>
             <button class="chat-widget__close" type="button" aria-label="상담창 닫기">×</button>
           </header>
@@ -46,6 +47,7 @@ class ChatWidget extends HTMLElement {
     this.toggleButton.addEventListener('click', this.handleToggle);
     this.closeButton.addEventListener('click', this.handleClose);
     this.form.addEventListener('submit', this.handleSubmit);
+    this.restoreConversation();
   }
 
   disconnectedCallback() {
@@ -78,7 +80,6 @@ class ChatWidget extends HTMLElement {
       this.hasStarted = true;
     }
 
-    window.requestAnimationFrame(() => this.input.focus());
   }
 
   close() {
@@ -107,7 +108,7 @@ class ChatWidget extends HTMLElement {
     }, 500);
   }
 
-  addMessage(sender, text) {
+  addMessage(sender, text, shouldSave = true) {
     const message = document.createElement('div');
     message.className = `chat-widget__message chat-widget__message--${sender}`;
 
@@ -121,6 +122,43 @@ class ChatWidget extends HTMLElement {
     message.append(senderName, content);
     this.messages.appendChild(message);
     this.messages.scrollTop = this.messages.scrollHeight;
+
+    if (shouldSave) {
+      this.saveConversation();
+    }
+  }
+
+  saveConversation() {
+    const conversation = [...this.messages.querySelectorAll('.chat-widget__message')].map((message) => ({
+      sender: message.classList.contains('chat-widget__message--bot') ? 'bot' : 'user',
+      text: message.querySelector('p')?.textContent ?? '',
+    }));
+
+    sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(conversation.slice(-50)));
+  }
+
+  restoreConversation() {
+    let conversation = [];
+
+    try {
+      conversation = JSON.parse(sessionStorage.getItem(CHAT_STORAGE_KEY) ?? '[]');
+    } catch {
+      sessionStorage.removeItem(CHAT_STORAGE_KEY);
+    }
+
+    if (!Array.isArray(conversation)) return;
+
+    conversation.forEach((item) => {
+      if ((item?.sender === 'bot' || item?.sender === 'user') && typeof item.text === 'string') {
+        this.addMessage(item.sender, item.text, false);
+      }
+    });
+
+    this.hasStarted = conversation.length > 0;
+
+    if (conversation.at(-1)?.sender === 'user') {
+      this.addMessage('bot', OFF_HOURS_MESSAGE);
+    }
   }
 }
 
