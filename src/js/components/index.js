@@ -1,7 +1,7 @@
 import './app-header.js';
 import './app-footer.js';
 import './top-button.js';
-import './chat-widget.js';
+import './chat-widget.js?v=2';
 import './room-card.js';
 import './room-gallery.js';
 import './reservation-calendar.js';
