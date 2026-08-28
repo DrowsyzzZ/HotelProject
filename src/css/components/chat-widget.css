@@ -38,10 +38,13 @@ chat-widget {
 
 .chat-widget__toggle:focus-visible,
 .chat-widget__close:focus-visible,
-.chat-widget__form input:focus-visible,
 .chat-widget__form button:focus-visible {
   outline: 2px solid var(--color-black);
   outline-offset: 3px;
+}
+
+.chat-widget__form input:focus {
+  outline: none;
 }
 
 .chat-widget__panel {
