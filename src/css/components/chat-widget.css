@@ -8,25 +8,26 @@ chat-widget {
 
 .chat-widget__toggle {
   display: grid;
-  width: 58px;
-  height: 58px;
-  padding: 7px 4px 5px;
+  width: 50px;
+  height: 50px;
+  padding: 6px 4px 5px;
   color: var(--color-white);
   cursor: pointer;
-  background: #255f38;
+  background: var(--color-top-button-bg);
   border: 0;
-  border-radius: 50%;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 22%);
+  border-radius: 2px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 16%);
   place-items: center;
+  transition: filter 200ms ease;
 }
 
 .chat-widget__toggle i {
-  font-size: 21px;
+  font-size: 18px;
   pointer-events: none;
 }
 
 .chat-widget__toggle span {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   line-height: 1;
 }
@@ -39,8 +40,8 @@ chat-widget {
 .chat-widget__close:focus-visible,
 .chat-widget__form input:focus-visible,
 .chat-widget__form button:focus-visible {
-  outline: 3px solid #d5a94e;
-  outline-offset: 2px;
+  outline: 2px solid var(--color-black);
+  outline-offset: 3px;
 }
 
 .chat-widget__panel {
@@ -49,13 +50,13 @@ chat-widget {
   bottom: 72px;
   display: grid;
   grid-template-rows: auto minmax(220px, 1fr) auto;
-  width: min(370px, calc(100vw - 30px));
-  height: min(520px, calc(100vh - 135px));
+  width: min(390px, calc(100vw - 30px));
+  height: min(540px, calc(100vh - 135px));
   overflow: hidden;
-  background: #fff;
-  border: 1px solid #d8d8d8;
-  border-radius: 18px;
-  box-shadow: 0 18px 50px rgb(0 0 0 / 24%);
+  background: var(--color-white);
+  border: 1px solid var(--color-black);
+  border-radius: 2px;
+  box-shadow: 0 14px 36px rgb(0 0 0 / 18%);
 }
 
 .chat-widget__panel[hidden] {
@@ -66,9 +67,10 @@ chat-widget {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 18px 16px;
-  color: #fff;
-  background: #255f38;
+  padding: 20px;
+  color: var(--color-white);
+  background: var(--color-top-button-bg);
+  border-bottom: 1px solid rgb(255 255 255 / 25%);
 }
 
 .chat-widget__header strong,
@@ -77,12 +79,13 @@ chat-widget {
 }
 
 .chat-widget__header strong {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .chat-widget__header span {
-  margin-top: 3px;
+  margin-top: 5px;
   color: rgb(255 255 255 / 76%);
   font-size: 12px;
 }
@@ -91,8 +94,8 @@ chat-widget {
   width: 36px;
   height: 36px;
   padding: 0;
-  color: #fff;
-  font-size: 28px;
+  color: var(--color-white);
+  font-size: 26px;
   line-height: 1;
   cursor: pointer;
   background: transparent;
@@ -103,9 +106,9 @@ chat-widget {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 20px 16px;
+  padding: 24px 20px;
   overflow-y: auto;
-  background: #f5f3ed;
+  background: var(--color-gray-1);
 }
 
 .chat-widget__message {
@@ -124,7 +127,7 @@ chat-widget {
 
 .chat-widget__sender {
   margin: 0 5px 5px;
-  color: #555;
+  color: var(--color-text-hover);
   font-size: 11px;
 }
 
@@ -134,28 +137,28 @@ chat-widget {
 
 .chat-widget__message p {
   margin: 0;
-  padding: 11px 13px;
+  padding: 12px 14px;
   font-size: 14px;
   line-height: 1.55;
   overflow-wrap: anywhere;
-  background: #fff;
-  border-radius: 4px 14px 14px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 7%);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-2);
+  border-radius: 2px;
 }
 
 .chat-widget__message--user p {
-  color: #fff;
-  background: #255f38;
-  border-radius: 14px 4px 14px 14px;
+  color: var(--color-white);
+  background: var(--color-top-button-bg);
+  border-color: var(--color-top-button-bg);
 }
 
 .chat-widget__form {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px;
-  padding: 13px;
-  background: #fff;
-  border-top: 1px solid #e4e4e4;
+  padding: 14px;
+  background: var(--color-white);
+  border-top: 1px solid var(--color-gray-2);
 }
 
 .chat-widget__form input {
@@ -163,24 +166,29 @@ chat-widget {
   padding: 11px 12px;
   font: inherit;
   font-size: 14px;
-  border: 1px solid #c7c7c7;
-  border-radius: 8px;
+  border: 1px solid var(--color-gray-3);
+  border-radius: 2px;
 }
 
 .chat-widget__form input:disabled {
-  background: #efefef;
+  background: var(--color-gray-1);
 }
 
 .chat-widget__form button {
   padding: 0 16px;
-  color: #fff;
+  color: var(--color-white);
   font: inherit;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  background: #255f38;
+  background: var(--color-top-button-bg);
   border: 0;
-  border-radius: 8px;
+  border-radius: 2px;
+  transition: filter 200ms ease;
+}
+
+.chat-widget__form button:hover {
+  filter: brightness(0.9);
 }
 
 .sr-only {
