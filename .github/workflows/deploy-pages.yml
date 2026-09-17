@@ -31,6 +31,11 @@ jobs:
         with:
           enablement: true
 
+      - name: Configure public chat endpoint
+        env:
+          CHAT_API_BASE_URL: ${{ vars.CHAT_API_BASE_URL }}
+        run: node ./scripts/write-runtime-config.mjs
+
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:

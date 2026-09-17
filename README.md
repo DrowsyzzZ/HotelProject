@@ -29,6 +29,37 @@ HTML, CSS, JavaScript와 Supabase를 사용해 제작한 반응형 호텔 예약
 
 로컬에서 개발하거나 수정 사항을 확인하려면 `src` 폴더를 VS Code Live Server 등의 정적 서버로 실행합니다. 별도의 JSON Server는 필요하지 않습니다.
 
+### AI 상담 챗봇 서버
+
+정적 프론트엔드는 GitHub Pages에서 제공하지만, AI 상담은 별도 Node.js 서버가 담당합니다. 브라우저는 이 서버의 `/api/chat`만 호출하며, LM Studio 주소와 모델명은 프론트에 노출되지 않습니다.
+
+1. LM Studio에서 Qwen Instruct 모델을 불러오고 **OpenAI Compatible API Server**를 시작합니다.
+2. 개발 PC에서는 SSH 터널을 열어 LM Studio API를 로컬 `127.0.0.1:1234`으로 연결합니다.
+3. `server/.env.example`을 `server/.env`로 복사한 뒤 `LLM_BASE_URL`, `LLM_MODEL`, `CORS_ORIGINS`를 확인합니다.
+4. `server` 폴더에서 `npm run dev`를 실행합니다.
+5. Live Server로 사이트를 열고 우측 하단 `상담` 버튼에서 질문합니다.
+
+기본 개발 설정은 Live Server(`http://127.0.0.1:5500`)와 챗 서버(`http://127.0.0.1:3001`)를 사용합니다. `server/.env`는 Git에 올리지 않습니다.
+
+Qwen 3.5 9B는 기본적으로 내부 추론 토큰을 생성할 수 있으므로 `LLM_MAX_TOKENS=2048`을 권장합니다. 이 값이 너무 작으면 최종 답변 전에 생성이 끝나 응답을 반환하지 못할 수 있습니다.
+
+### AI 상담 배포 설정
+
+GitHub Pages는 Node 서버를 실행할 수 없으므로 `server/`는 별도의 HTTPS 서버에 배포해야 합니다. Ubuntu의 LM Studio 장비에 챗 서버를 같이 실행하고, LM Studio는 로컬에 유지한 채 챗 API만 Tailscale Funnel로 공개하는 방식을 권장합니다. 자세한 과정은 [`server/deploy/DEPLOYMENT.md`](server/deploy/DEPLOYMENT.md)를 참고합니다.
+
+해당 서버의 `.env`에서만 다음 값을 설정합니다.
+
+```env
+LLM_BASE_URL=https://your-llm-host.example/v1
+LLM_MODEL=qwen/qwen3.5-9b
+```
+
+챗 서버와 LM Studio를 같은 Ubuntu 장비에 둘 경우 `LLM_BASE_URL`은 `http://127.0.0.1:1234/v1`으로 유지합니다. Funnel로 외부에 공개하는 대상은 LM Studio가 아니라 챗 API입니다. 이 주소와 API 키는 절대 `src/`에 넣지 않습니다.
+
+프론트가 호출할 공개 챗 서버 주소는 GitHub 저장소의 **Settings → Secrets and variables → Actions → Variables**에 `CHAT_API_BASE_URL`로 등록합니다. 값은 예를 들어 `https://api.example.com`처럼 HTTPS 주소만 사용합니다. Pages 배포 과정이 이 공개 주소만 `src/js/runtime-config.js`에 주입합니다.
+
+휴대폰으로 개발 서버를 시험할 때는 `server/.env`의 `HOST=0.0.0.0`으로 바꾸고, Windows의 LAN 주소를 `CORS_ORIGINS`에 추가합니다. 휴대폰과 PC가 같은 네트워크라면 Live Server의 LAN 주소로 접속했을 때 챗봇은 같은 PC의 `3001` 포트를 자동으로 사용합니다. GitHub Pages처럼 HTTPS로 열린 사이트에서 시험하려면 챗 서버도 HTTPS 터널 또는 배포 서버로 노출해야 합니다.
+
 Supabase 프로젝트를 새로 구성할 때는 SQL Editor에서 다음 파일을 순서대로 실행합니다.
 
 1. [`supabase/schema.sql`](supabase/schema.sql): 테이블과 관계 생성

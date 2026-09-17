@@ -1,0 +1,14 @@
+{
+  "name": "hotel-chat-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "scripts": {
+    "start": "node --env-file=.env src/index.js",
+    "dev": "node --watch --env-file=.env src/index.js",
+    "check": "node --check src/index.js && node --check src/routes/chat.js && node --check src/services/chat-service.js && node --check src/services/llm/lm-studio-client.js"
+  }
+}

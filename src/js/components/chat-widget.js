@@ -1,6 +1,8 @@
+import { requestChatReply } from '../chat-api.js';
+
 const BOT_NAME = 'AI 상담사';
-const OFF_HOURS_MESSAGE = '네 고객님 지금은 업무시간이 아니니 업무시간에 문의하십시오.';
 const CHAT_STORAGE_KEY = 'hotel-chat-conversation';
+const MAX_CONVERSATION_MESSAGES = 12;
 
 class ChatWidget extends HTMLElement {
   connectedCallback() {
@@ -37,8 +39,10 @@ class ChatWidget extends HTMLElement {
     this.messages = this.querySelector('.chat-widget__messages');
     this.form = this.querySelector('.chat-widget__form');
     this.input = this.querySelector('#chat-widget-input');
+    this.submitButton = this.form.querySelector('button[type="submit"]');
     this.hasStarted = false;
-    this.replyTimer = null;
+    this.isWaitingForReply = false;
+    this.loadingMessage = null;
 
     this.handleToggle = this.handleToggle.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -54,7 +58,6 @@ class ChatWidget extends HTMLElement {
     this.toggleButton?.removeEventListener('click', this.handleToggle);
     this.closeButton?.removeEventListener('click', this.handleClose);
     this.form?.removeEventListener('submit', this.handleSubmit);
-    window.clearTimeout(this.replyTimer);
   }
 
   handleToggle() {
@@ -90,27 +93,81 @@ class ChatWidget extends HTMLElement {
     this.toggleButton.focus();
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
 
     const question = this.input.value.trim();
-    if (!question) return;
+    if (!question || this.isWaitingForReply) return;
 
-    this.addMessage('user', question);
+    this.addMessage('user', question, false);
     this.input.value = '';
-    this.input.disabled = true;
+    this.setPendingState(true);
+    this.showLoadingMessage();
 
-    window.clearTimeout(this.replyTimer);
-    this.replyTimer = window.setTimeout(() => {
-      this.addMessage('bot', OFF_HOURS_MESSAGE);
-      this.input.disabled = false;
+    try {
+      const reply = await requestChatReply(this.getConversationForRequest());
+      this.removeLoadingMessage();
+      this.addMessage('bot', reply, false);
+      this.saveConversation();
+    } catch (error) {
+      this.removeLoadingMessage();
+      this.addMessage(
+        'bot',
+        error instanceof Error && error.message
+          ? error.message
+          : 'AI 상담 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.',
+        false,
+      );
+    } finally {
+      this.setPendingState(false);
       this.input.focus();
-    }, 500);
+    }
+  }
+
+  setPendingState(isPending) {
+    this.isWaitingForReply = isPending;
+    this.input.disabled = isPending;
+    this.submitButton.disabled = isPending;
+    this.form.setAttribute('aria-busy', String(isPending));
+  }
+
+  showLoadingMessage() {
+    this.removeLoadingMessage();
+    this.loadingMessage = this.createMessage('bot', '답변을 준비하고 있습니다.', true);
+    this.loadingMessage.classList.add('chat-widget__message--loading');
+    this.messages.appendChild(this.loadingMessage);
+    this.messages.scrollTop = this.messages.scrollHeight;
+  }
+
+  removeLoadingMessage() {
+    this.loadingMessage?.remove();
+    this.loadingMessage = null;
+  }
+
+  getConversationForRequest() {
+    return [...this.messages.querySelectorAll('.chat-widget__message:not(.chat-widget__message--loading)')]
+      .slice(-MAX_CONVERSATION_MESSAGES)
+      .map(message => ({
+        role: message.classList.contains('chat-widget__message--bot') ? 'assistant' : 'user',
+        content: message.querySelector('p')?.textContent ?? '',
+      }));
   }
 
   addMessage(sender, text, shouldSave = true) {
+    const message = this.createMessage(sender, text);
+    this.messages.appendChild(message);
+    this.messages.scrollTop = this.messages.scrollHeight;
+
+    if (shouldSave) {
+      this.saveConversation();
+    }
+  }
+
+  createMessage(sender, text, isLive = false) {
     const message = document.createElement('div');
     message.className = `chat-widget__message chat-widget__message--${sender}`;
+
+    if (isLive) message.setAttribute('aria-live', 'polite');
 
     const senderName = document.createElement('span');
     senderName.className = 'chat-widget__sender';
@@ -120,12 +177,7 @@ class ChatWidget extends HTMLElement {
     content.textContent = text;
 
     message.append(senderName, content);
-    this.messages.appendChild(message);
-    this.messages.scrollTop = this.messages.scrollHeight;
-
-    if (shouldSave) {
-      this.saveConversation();
-    }
+    return message;
   }
 
   saveConversation() {
@@ -156,9 +208,6 @@ class ChatWidget extends HTMLElement {
 
     this.hasStarted = conversation.length > 0;
 
-    if (conversation.at(-1)?.sender === 'user') {
-      this.addMessage('bot', OFF_HOURS_MESSAGE);
-    }
   }
 }
 

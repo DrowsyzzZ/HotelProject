@@ -157,6 +157,12 @@ chat-widget {
   border-color: var(--color-top-button-bg);
 }
 
+.chat-widget__message--loading p {
+  color: var(--color-text-hover);
+  font-size: 13px;
+  background: rgb(255 255 255 / 70%);
+}
+
 .chat-widget__form {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -194,6 +200,11 @@ chat-widget {
 
 .chat-widget__form button:hover {
   filter: brightness(0.9);
+}
+
+.chat-widget__form button:disabled {
+  cursor: wait;
+  filter: grayscale(0.45);
 }
 
 .sr-only {

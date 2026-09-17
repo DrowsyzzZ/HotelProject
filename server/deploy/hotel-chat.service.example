@@ -1,0 +1,20 @@
+[Unit]
+Description=HotelProject AI chat API
+Wants=network-online.target tailscale-online.target
+After=network-online.target tailscale-online.target
+
+[Service]
+Type=simple
+# Replace with the Linux account that owns the deployed project files.
+User=YOUR_LINUX_USER
+WorkingDirectory=/opt/hotel-project/server
+EnvironmentFile=/etc/hotel-chat/.env
+# Replace /usr/bin/node if `command -v node` returns a different path.
+ExecStart=/usr/bin/node /opt/hotel-project/server/src/index.js
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
