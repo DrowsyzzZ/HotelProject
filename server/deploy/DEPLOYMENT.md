@@ -28,14 +28,15 @@ sudo nano /etc/hotel-chat/.env
 
 개발 PC의 VNC 창이나 SSH 터널은 Ubuntu의 프로그램을 보여 주는 수단일 뿐입니다. 운영 환경에서는 LM Studio도 Ubuntu 부팅 시 자동으로 시작되게 설정하는 편이 안전합니다.
 
-먼저 Ubuntu에서 LM Studio CLI와 모델 식별자를 확인합니다.
+그래픽 환경에서 쓰던 LM Studio 앱은 로그인 없는 systemd 부팅 과정에서 시작 시간이 초과할 수 있습니다. 운영용으로는 공식 **llmster** 헤드리스 런타임을 한 번 설치합니다. 이 과정은 데스크톱 앱이나 이미 내려받은 모델을 삭제하지 않습니다.
 
 ```bash
-command -v lms || "$HOME/.lmstudio/bin/lms" --version
+curl -fsSL https://lmstudio.ai/install.sh | bash
+"$HOME/.lmstudio/bin/lms" --help
 "$HOME/.lmstudio/bin/lms" ls
 ```
 
-`lms`가 없다면 [LM Studio 공식 headless 설치 문서](https://lmstudio.ai/docs/developer/core/headless_llmster)를 따라 설치한 뒤 다시 확인합니다. 이 프로젝트는 LM Studio의 **Just-In-Time Model Loading**을 사용합니다. 따라서 서비스 파일에 로컬 GGUF 파일 경로를 고정하지 않고, 서버의 `LLM_MODEL=qwen/qwen3.5-9b` 요청에 맞춰 첫 대화에서 모델을 자동으로 불러옵니다.
+이 프로젝트는 LM Studio의 **Just-In-Time Model Loading**을 사용합니다. 따라서 서비스 파일에 로컬 GGUF 파일 경로를 고정하지 않고, 서버의 `LLM_MODEL=qwen/qwen3.5-9b` 요청에 맞춰 첫 대화에서 모델을 자동으로 불러옵니다. 설치 및 시작 방식은 [LM Studio 공식 llmster 안내](https://lmstudio.ai/docs/developer/core/headless_llmster)를 따릅니다.
 
 ```bash
 cd ~/HotelProject/server

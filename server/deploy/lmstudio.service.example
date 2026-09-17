@@ -11,8 +11,9 @@ RemainAfterExit=yes
 User=YOUR_LINUX_USER
 Environment=HOME=/home/YOUR_LINUX_USER
 
-# Confirm this path with: command -v lms
-# The LM Studio desktop app commonly installs it here on Linux.
+# Install the standalone llmster runtime first:
+# curl -fsSL https://lmstudio.ai/install.sh | bash
+# Do not use the desktop-app-only CLI here; it needs a graphical login.
 ExecStartPre=/home/YOUR_LINUX_USER/.lmstudio/bin/lms daemon up
 
 # JIT model loading is enabled in LM Studio.  Do not hard-code an `lms load`
