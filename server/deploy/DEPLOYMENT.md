@@ -35,7 +35,7 @@ command -v lms || "$HOME/.lmstudio/bin/lms" --version
 "$HOME/.lmstudio/bin/lms" ls
 ```
 
-`lms`가 없다면 [LM Studio 공식 headless 설치 문서](https://lmstudio.ai/docs/developer/core/headless_llmster)를 따라 설치한 뒤 다시 확인합니다. 기존에 내려받은 모델의 정확한 식별자가 `qwen/qwen3.5-9b`와 다르면 아래 서비스 파일의 모델명을 `lms ls` 결과에 맞춰 바꿉니다.
+`lms`가 없다면 [LM Studio 공식 headless 설치 문서](https://lmstudio.ai/docs/developer/core/headless_llmster)를 따라 설치한 뒤 다시 확인합니다. 이 프로젝트는 LM Studio의 **Just-In-Time Model Loading**을 사용합니다. 따라서 서비스 파일에 로컬 GGUF 파일 경로를 고정하지 않고, 서버의 `LLM_MODEL=qwen/qwen3.5-9b` 요청에 맞춰 첫 대화에서 모델을 자동으로 불러옵니다.
 
 ```bash
 cd ~/HotelProject/server
