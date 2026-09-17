@@ -39,6 +39,22 @@ export const HOTEL_READ_TOOLS = Object.freeze([
   {
     type: 'function',
     function: {
+      name: 'list_available_rooms',
+      description: '특정 입실일~퇴실일에 예약 가능한 모든 객실을 조회한다. 퇴실일이 없으면 입실일 기준 1박으로 조회한다. 객실명을 지정하지 않고 가능한 방을 묻는 질문에 사용한다.',
+      parameters: {
+        type: 'object',
+        properties: {
+          check_in_date: { type: 'string', description: '입실일, YYYY-MM-DD' },
+          check_out_date: { type: 'string', description: '선택 사항. 퇴실일, YYYY-MM-DD. 없으면 1박으로 조회한다.' },
+        },
+        required: ['check_in_date'],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'check_room_availability',
       description: '특정 객실이 지정한 입실일~퇴실일 기간에 예약 가능한지 확인한다. 날짜는 YYYY-MM-DD 형식이며, 퇴실일은 숙박일에 포함하지 않는다.',
       parameters: {
@@ -105,6 +121,9 @@ export async function runHotelReadTool(name, rawArguments) {
         break;
       case 'get_room_details':
         data = await hotelReadService.getRoomDetails(args.room_name);
+        break;
+      case 'list_available_rooms':
+        data = await hotelReadService.getAvailableRooms(args.check_in_date, args.check_out_date);
         break;
       case 'check_room_availability':
         data = await hotelReadService.getAvailability(

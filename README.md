@@ -62,7 +62,7 @@ LLM_MODEL=qwen/qwen3.5-9b
 
 ### AI 상담의 실시간 호텔 데이터 조회
 
-챗봇은 서버에서만 Supabase의 **읽기 전용** 데이터를 조회할 수 있습니다. Ubuntu의 `/etc/hotel-chat/.env`에 아래를 설정하면 객실 정보, 예상 요금, 날짜별 예약 가능 여부를 답할 수 있습니다.
+챗봇은 서버에서만 Supabase의 **읽기 전용** 데이터를 조회할 수 있습니다. Ubuntu의 `/etc/hotel-chat/.env`에 아래를 설정하면 객실 정보, 예상 요금, 날짜별 예약 가능 여부를 답할 수 있습니다. 객실명을 지정하지 않고 특정 날짜에 가능한 방을 물으면 1박 기준으로 전체 객실을 조회합니다.
 
 ```env
 SUPABASE_URL=https://YOUR_PROJECT.supabase.co

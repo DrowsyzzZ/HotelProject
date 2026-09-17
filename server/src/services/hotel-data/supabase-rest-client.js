@@ -87,5 +87,10 @@ export function createSupabaseReadClient({ baseUrl, publishableKey, requestTimeo
       check_in_date: `lt.${checkOutDate}`,
       check_out_date: `gt.${checkInDate}`,
     }),
+    getReservationsForAllRoomsStay: (checkInDate, checkOutDate) => getRows('reservations', {
+      select: 'room_id,check_in_date,check_out_date',
+      check_in_date: `lt.${checkOutDate}`,
+      check_out_date: `gt.${checkInDate}`,
+    }),
   });
 }

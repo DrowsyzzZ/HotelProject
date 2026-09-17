@@ -55,6 +55,19 @@ function getStayDates(checkIn, checkOut) {
   return dates;
 }
 
+function getNextDateKey(dateKey) {
+  const date = parseDateKey(dateKey, '입실일');
+  return new Date(date.timestamp + 86_400_000).toISOString().slice(0, 10);
+}
+
+function resolveCheckOutDate(checkInDate, checkOutDate) {
+  if (checkOutDate === undefined || checkOutDate === null || checkOutDate === '') {
+    return { checkOutDate: getNextDateKey(checkInDate), assumedOneNight: true };
+  }
+
+  return { checkOutDate, assumedOneNight: false };
+}
+
 function validateStay(checkInDate, checkOutDate) {
   const checkIn = parseDateKey(checkInDate, '입실일');
   const checkOut = parseDateKey(checkOutDate, '퇴실일');
@@ -157,6 +170,31 @@ export function createHotelReadService(supabaseConfig) {
     };
   }
 
+  async function getAvailableRooms(checkInDate, requestedCheckOutDate) {
+    const { checkOutDate, assumedOneNight } = resolveCheckOutDate(checkInDate, requestedCheckOutDate);
+    const stay = validateStay(checkInDate, checkOutDate);
+    const [rooms, overlappingReservations] = await Promise.all([
+      client.getRooms(),
+      client.getReservationsForAllRoomsStay(stay.checkIn.key, stay.checkOut.key),
+    ]);
+    const occupiedRoomIds = new Set(overlappingReservations.map(reservation => Number(reservation.room_id)));
+    const roomsWithAvailability = rooms.map(room => ({
+      room: toRoomSummary(room),
+      available: !occupiedRoomIds.has(Number(room.id)),
+    }));
+
+    return {
+      check_in_date: stay.checkIn.key,
+      check_out_date: stay.checkOut.key,
+      nights: stay.stayNights,
+      assumed_one_night: assumedOneNight,
+      rooms: roomsWithAvailability,
+      available_rooms: roomsWithAvailability
+        .filter(item => item.available)
+        .map(item => item.room),
+    };
+  }
+
   async function getQuote(roomName, checkInDate, checkOutDate, requestedExtraGuests) {
     const [room, stay, seasons, prices, holidays] = await Promise.all([
       findRoom(roomName),
@@ -211,6 +249,7 @@ export function createHotelReadService(supabaseConfig) {
     listRooms: async () => (await client.getRooms()).map(toRoomSummary),
     getRoomDetails: async roomName => toRoomSummary(await findRoom(roomName)),
     getAvailability,
+    getAvailableRooms,
     getQuote,
   });
 }

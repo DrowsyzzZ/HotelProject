@@ -1,7 +1,7 @@
 import { requestChatReply } from '../chat-api.js';
 
 const BOT_NAME = 'AI 상담사';
-const CHAT_STORAGE_KEY = 'hotel-chat-conversation';
+const CHAT_STORAGE_KEY = 'hotel-chat-conversation-v2';
 const MAX_CONVERSATION_MESSAGES = 12;
 
 class ChatWidget extends HTMLElement {
