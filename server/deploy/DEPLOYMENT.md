@@ -24,28 +24,53 @@ sudo nano /etc/hotel-chat/.env
 
 `CORS_ORIGINS`에는 실제 프론트 주소만 남깁니다. 기본 GitHub Pages 주소는 `https://drowsyzzz.github.io`입니다. `LLM_BASE_URL`은 같은 Ubuntu 장비의 LM Studio를 가리키므로 `http://127.0.0.1:1234/v1`을 유지합니다.
 
-## 3. systemd로 상시 실행
+## 3. LM Studio를 GUI와 독립적으로 자동 실행
 
-`hotel-chat.service.example`의 `YOUR_LINUX_USER`, 프로젝트 경로와 Node 실행 경로를 실제 값으로 바꾼 뒤 설치합니다.
+개발 PC의 VNC 창이나 SSH 터널은 Ubuntu의 프로그램을 보여 주는 수단일 뿐입니다. 운영 환경에서는 LM Studio도 Ubuntu 부팅 시 자동으로 시작되게 설정하는 편이 안전합니다.
+
+먼저 Ubuntu에서 LM Studio CLI와 모델 식별자를 확인합니다.
 
 ```bash
-command -v node
-sudo cp /opt/hotel-project/server/deploy/hotel-chat.service.example /etc/systemd/system/hotel-chat.service
-sudo nano /etc/systemd/system/hotel-chat.service
-sudo systemctl daemon-reload
-sudo systemctl enable --now hotel-chat
-sudo systemctl status hotel-chat
+command -v lms || "$HOME/.lmstudio/bin/lms" --version
+"$HOME/.lmstudio/bin/lms" ls
 ```
 
-정상 실행 여부는 Ubuntu에서 확인합니다.
+`lms`가 없다면 [LM Studio 공식 headless 설치 문서](https://lmstudio.ai/docs/developer/core/headless_llmster)를 따라 설치한 뒤 다시 확인합니다. 기존에 내려받은 모델의 정확한 식별자가 `qwen/qwen3.5-9b`와 다르면 아래 서비스 파일의 모델명을 `lms ls` 결과에 맞춰 바꿉니다.
 
 ```bash
+cd ~/HotelProject/server
+sed \
+  -e 's|YOUR_LINUX_USER|llm7|g' \
+  deploy/lmstudio.service.example > /tmp/lmstudio.service
+sudo install -m 644 /tmp/lmstudio.service /etc/systemd/system/lmstudio.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now lmstudio
+sudo systemctl status lmstudio --no-pager
+curl http://127.0.0.1:1234/v1/models
+```
+
+위 서비스는 LM Studio를 `127.0.0.1:1234`에서만 실행합니다. 따라서 LM Studio API는 인터넷에 노출되지 않습니다. GUI에서 이미 켜 둔 Local Server가 있다면, 이 서비스를 처음 시작하기 전에 GUI의 서버를 한 번 중지한 뒤 실행하면 포트 충돌을 피할 수 있습니다.
+
+## 4. 챗 API를 systemd로 상시 실행
+
+서비스 파일에 `lmstudio.service` 의존성을 추가했으므로, 기존 `hotel-chat` 서비스도 최신 템플릿으로 갱신합니다. `YOUR_LINUX_USER`, 프로젝트 경로와 Node 실행 경로를 실제 값으로 바꾼 뒤 설치합니다.
+
+```bash
+cd ~/HotelProject/server
+sed \
+  -e 's|YOUR_LINUX_USER|llm7|g' \
+  -e 's|/opt/hotel-project|/home/llm7/HotelProject|g' \
+  deploy/hotel-chat.service.example > /tmp/hotel-chat.service
+sudo install -m 644 /tmp/hotel-chat.service /etc/systemd/system/hotel-chat.service
+sudo systemctl daemon-reload
+sudo systemctl restart hotel-chat
+sudo systemctl status hotel-chat --no-pager
 curl http://127.0.0.1:3001/health
 ```
 
 `{"status":"ok"}`가 반환되어야 합니다. 로그 확인은 `sudo journalctl -u hotel-chat -f`를 사용합니다.
 
-## 4. Tailscale Funnel로 챗 API만 HTTPS 공개
+## 5. Tailscale Funnel로 챗 API만 HTTPS 공개
 
 LM Studio의 1234 포트가 아니라, 챗 API의 3001 포트만 Funnel로 공개합니다.
 
@@ -58,7 +83,7 @@ tailscale funnel status
 
 Funnel을 쓰려면 Tailscale 관리 화면에서 MagicDNS, HTTPS 인증서, Funnel 권한이 활성화돼 있어야 합니다.
 
-## 5. GitHub Pages 연결
+## 6. GitHub Pages 연결
 
 GitHub 저장소에서 **Settings → Secrets and variables → Actions → Variables**로 이동해 다음 Repository Variable을 만듭니다.
 
@@ -74,3 +99,4 @@ CHAT_API_BASE_URL=https://YOUR_FUNNEL_HOST.ts.net
 - LM Studio는 Ubuntu의 `127.0.0.1:1234`에서만 실행합니다.
 - 모델이 꺼져 있으면 챗 API는 안전한 오류 문구를 반환하고, LM Studio를 다시 시작하면 별도 챗 서버 재시작 없이 다음 요청부터 복구됩니다.
 - Funnel 공개 주소는 인터넷에서 접근 가능하므로 `CORS_ORIGINS`를 정확한 프론트 출처로 제한합니다.
+- `systemctl status lmstudio hotel-chat`로 두 서비스를 함께 점검할 수 있습니다. 재부팅 뒤에는 Funnel 주소와 휴대폰 챗봇을 한 번씩 확인합니다.

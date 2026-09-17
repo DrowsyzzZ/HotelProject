@@ -47,6 +47,8 @@ Qwen 3.5 9B는 기본적으로 내부 추론 토큰을 생성할 수 있으므�
 
 GitHub Pages는 Node 서버를 실행할 수 없으므로 `server/`는 별도의 HTTPS 서버에 배포해야 합니다. Ubuntu의 LM Studio 장비에 챗 서버를 같이 실행하고, LM Studio는 로컬에 유지한 채 챗 API만 Tailscale Funnel로 공개하는 방식을 권장합니다. 자세한 과정은 [`server/deploy/DEPLOYMENT.md`](server/deploy/DEPLOYMENT.md)를 참고합니다.
 
+운영 환경에서는 Ubuntu가 재부팅돼도 VNC나 개발 PC 없이 복구되도록 LM Studio와 챗 API를 각각 systemd 서비스로 등록합니다.
+
 해당 서버의 `.env`에서만 다음 값을 설정합니다.
 
 ```env

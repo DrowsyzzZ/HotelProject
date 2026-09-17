@@ -1,0 +1,26 @@
+[Unit]
+Description=LM Studio private inference server
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+# LM Studio's CLI starts its daemon/server in the background.  The unit stays
+# active so hotel-chat can depend on it after the command has completed.
+Type=oneshot
+RemainAfterExit=yes
+User=YOUR_LINUX_USER
+Environment=HOME=/home/YOUR_LINUX_USER
+
+# Confirm this path with: command -v lms
+# The LM Studio desktop app commonly installs it here on Linux.
+ExecStartPre=/home/YOUR_LINUX_USER/.lmstudio/bin/lms daemon up
+
+# Replace the identifier only when `lms ls` shows a different one.
+ExecStartPre=/home/YOUR_LINUX_USER/.lmstudio/bin/lms load qwen/qwen3.5-9b --yes
+ExecStart=/home/YOUR_LINUX_USER/.lmstudio/bin/lms server start --bind 127.0.0.1 --port 1234
+ExecStop=/home/YOUR_LINUX_USER/.lmstudio/bin/lms daemon down
+TimeoutStartSec=180
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
