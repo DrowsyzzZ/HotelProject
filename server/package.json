@@ -9,6 +9,6 @@
   "scripts": {
     "start": "node --env-file=.env src/index.js",
     "dev": "node --watch --env-file=.env src/index.js",
-    "check": "node --check src/index.js && node --check src/routes/chat.js && node --check src/services/chat-service.js && node --check src/services/llm/lm-studio-client.js"
+    "check": "node --check src/index.js && node --check src/routes/chat.js && node --check src/services/chat-service.js && node --check src/services/llm/lm-studio-client.js && node --check src/services/hotel-data/supabase-rest-client.js && node --check src/services/hotel-data/hotel-read-service.js && node --check src/services/hotel-data/hotel-tools.js"
   }
 }

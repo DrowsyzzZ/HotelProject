@@ -24,6 +24,16 @@ sudo nano /etc/hotel-chat/.env
 
 `CORS_ORIGINS`에는 실제 프론트 주소만 남깁니다. 기본 GitHub Pages 주소는 `https://drowsyzzz.github.io`입니다. `LLM_BASE_URL`은 같은 Ubuntu 장비의 LM Studio를 가리키므로 `http://127.0.0.1:1234/v1`을 유지합니다.
 
+객실 정보·예상 요금·예약 가능 여부를 챗봇이 읽을 수 있게 하려면 아래 세 값도 추가합니다. 기존 프론트의 `src/js/supabase-client.js`에 있는 URL과 **publishable key**를 사용하며, `service_role` 키는 사용하지 않습니다.
+
+```env
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+SUPABASE_PUBLISHABLE_KEY=sb_publishable_REPLACE_ME
+SUPABASE_REQUEST_TIMEOUT_MS=10000
+```
+
+이 연결은 `rooms`, `seasons`, `prices`, `holidays`와 개인정보를 제외한 예약 기간만 읽습니다. 예약 생성·취소, 고객 이름·전화번호 조회, 임의 SQL 또는 임의 RPC 호출은 제공하지 않습니다.
+
 ## 3. LM Studio를 GUI와 독립적으로 자동 실행
 
 개발 PC의 VNC 창이나 SSH 터널은 Ubuntu의 프로그램을 보여 주는 수단일 뿐입니다. 운영 환경에서는 LM Studio도 Ubuntu 부팅 시 자동으로 시작되게 설정하는 편이 안전합니다.

@@ -4,6 +4,10 @@ function requiredText(name) {
   return value;
 }
 
+function optionalText(name) {
+  return process.env[name]?.trim() || '';
+}
+
 function optionalInteger(name, fallback, { min, max }) {
   const value = process.env[name]?.trim();
   if (!value) return fallback;
@@ -54,6 +58,30 @@ function parseLlmBaseUrl() {
   return baseUrl;
 }
 
+function parseSupabaseConfig() {
+  const baseUrl = optionalText('SUPABASE_URL').replace(/\/$/, '');
+  const publishableKey = optionalText('SUPABASE_PUBLISHABLE_KEY');
+
+  if (!baseUrl && !publishableKey) return null;
+
+  if (!baseUrl || !publishableKey) {
+    throw new Error('SUPABASE_URL과 SUPABASE_PUBLISHABLE_KEY는 함께 설정해야 합니다.');
+  }
+
+  let parsed;
+  try {
+    parsed = new URL(baseUrl);
+  } catch {
+    throw new Error('SUPABASE_URL 환경변수는 올바른 URL이어야 합니다.');
+  }
+
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    throw new Error('SUPABASE_URL 환경변수는 http 또는 https URL이어야 합니다.');
+  }
+
+  return Object.freeze({ baseUrl, publishableKey });
+}
+
 export const env = Object.freeze({
   port: optionalInteger('PORT', 3001, { min: 1, max: 65535 }),
   host: process.env.HOST?.trim() || '127.0.0.1',
@@ -64,6 +92,8 @@ export const env = Object.freeze({
   llmRequestTimeoutMs: optionalInteger('LLM_REQUEST_TIMEOUT_MS', 30000, { min: 1000, max: 120000 }),
   llmTemperature: optionalNumber('LLM_TEMPERATURE', 0.4, { min: 0, max: 2 }),
   llmMaxTokens: optionalInteger('LLM_MAX_TOKENS', 2048, { min: 64, max: 8192 }),
+  supabase: parseSupabaseConfig(),
+  supabaseRequestTimeoutMs: optionalInteger('SUPABASE_REQUEST_TIMEOUT_MS', 10000, { min: 1000, max: 30000 }),
   rateLimitWindowMs: optionalInteger('CHAT_RATE_LIMIT_WINDOW_MS', 60000, { min: 1000, max: 3600000 }),
   rateLimitMaxRequests: optionalInteger('CHAT_RATE_LIMIT_MAX_REQUESTS', 30, { min: 1, max: 1000 }),
 });

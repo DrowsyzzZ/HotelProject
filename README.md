@@ -60,6 +60,18 @@ LLM_MODEL=qwen/qwen3.5-9b
 
 프론트가 호출할 공개 챗 서버 주소는 GitHub 저장소의 **Settings → Secrets and variables → Actions → Variables**에 `CHAT_API_BASE_URL`로 등록합니다. 값은 예를 들어 `https://api.example.com`처럼 HTTPS 주소만 사용합니다. Pages 배포 과정이 이 공개 주소만 `src/js/runtime-config.js`에 주입합니다.
 
+### AI 상담의 실시간 호텔 데이터 조회
+
+챗봇은 서버에서만 Supabase의 **읽기 전용** 데이터를 조회할 수 있습니다. Ubuntu의 `/etc/hotel-chat/.env`에 아래를 설정하면 객실 정보, 예상 요금, 날짜별 예약 가능 여부를 답할 수 있습니다.
+
+```env
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+SUPABASE_PUBLISHABLE_KEY=sb_publishable_REPLACE_ME
+SUPABASE_REQUEST_TIMEOUT_MS=10000
+```
+
+여기에는 기존 프론트에 사용하는 publishable key만 사용합니다. `service_role` 키, 고객 이름·전화번호, 예약 생성·취소 RPC는 챗봇에 연결하지 않습니다. LLM은 정해진 읽기 도구만 요청할 수 있고, 서버가 직접 실행한 결과만 답변에 반영합니다.
+
 휴대폰으로 개발 서버를 시험할 때는 `server/.env`의 `HOST=0.0.0.0`으로 바꾸고, Windows의 LAN 주소를 `CORS_ORIGINS`에 추가합니다. 휴대폰과 PC가 같은 네트워크라면 Live Server의 LAN 주소로 접속했을 때 챗봇은 같은 PC의 `3001` 포트를 자동으로 사용합니다. GitHub Pages처럼 HTTPS로 열린 사이트에서 시험하려면 챗 서버도 HTTPS 터널 또는 배포 서버로 노출해야 합니다.
 
 Supabase 프로젝트를 새로 구성할 때는 SQL Editor에서 다음 파일을 순서대로 실행합니다.

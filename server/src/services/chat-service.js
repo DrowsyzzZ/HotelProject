@@ -1,10 +1,12 @@
 import { HttpError } from '../http.js';
-import { createChatCompletion } from './llm/lm-studio-client.js';
-import { HOTEL_CHAT_SYSTEM_PROMPT } from './llm/system-prompt.js';
+import { createToolAwareChatCompletion, LlmServiceError } from './llm/lm-studio-client.js';
+import { HOTEL_READ_TOOLS, hasHotelReadTools, runHotelReadTool } from './hotel-data/hotel-tools.js';
+import { getHotelChatSystemPrompt } from './llm/system-prompt.js';
 
 const ALLOWED_ROLES = new Set(['user', 'assistant']);
 const MAX_MESSAGE_COUNT = 12;
 const MAX_MESSAGE_LENGTH = 1600;
+const MAX_TOOL_ROUNDS = 2;
 
 function normalizeMessage(message) {
   if (!message || typeof message !== 'object' || !ALLOWED_ROLES.has(message.role)) {
@@ -41,10 +43,60 @@ export function getConversationMessages(payload) {
 }
 
 export async function answerConversation(messages) {
-  const reply = await createChatCompletion([
-    { role: 'system', content: HOTEL_CHAT_SYSTEM_PROMPT },
+  const hasLiveHotelData = hasHotelReadTools();
+  const tools = hasLiveHotelData ? HOTEL_READ_TOOLS : [];
+  const completionMessages = [
+    { role: 'system', content: getHotelChatSystemPrompt({ hasLiveHotelData }) },
     ...messages,
-  ]);
+  ];
 
-  return { reply };
+  for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
+    const completion = await createToolAwareChatCompletion(completionMessages, {
+      tools,
+      toolChoice: tools.length > 0 ? 'auto' : undefined,
+    });
+
+    if (completion.toolCalls.length === 0) {
+      return { reply: completion.content };
+    }
+
+    completionMessages.push({
+      role: 'assistant',
+      content: completion.content || null,
+      tool_calls: completion.toolCalls,
+    });
+
+    const toolMessages = await Promise.all(completion.toolCalls.map(async toolCall => {
+      let argumentsObject;
+
+      try {
+        argumentsObject = JSON.parse(toolCall.function.arguments);
+      } catch {
+        return {
+          role: 'tool',
+          tool_call_id: toolCall.id,
+          content: JSON.stringify({ ok: false, error: '조회 요청 형식이 올바르지 않습니다.' }),
+        };
+      }
+
+      return {
+        role: 'tool',
+        tool_call_id: toolCall.id,
+        content: JSON.stringify(await runHotelReadTool(toolCall.function.name, argumentsObject)),
+      };
+    }));
+
+    completionMessages.push(...toolMessages);
+  }
+
+  const finalCompletion = await createToolAwareChatCompletion(completionMessages, {
+    tools,
+    toolChoice: 'none',
+  });
+
+  if (finalCompletion.toolCalls.length > 0 || !finalCompletion.content) {
+    throw new LlmServiceError('호텔 정보 조회 결과를 정리하지 못했습니다.');
+  }
+
+  return { reply: finalCompletion.content };
 }
